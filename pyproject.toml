@@ -1,0 +1,48 @@
+[project]
+name = "handoff-gauge"
+version = "0.1.0"
+description = "A ticket-triage agent that uses calibrated confidence to decide when to hand off to a human"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.149.0",
+    "httpx>=0.28.1",
+    "opentelemetry-api>=1.45.1",
+    "opentelemetry-sdk>=1.45.1",
+    "pydantic>=2.14.1",
+]
+
+[dependency-groups]
+dev = [
+    "datasets>=5.1.0",
+    "hypothesis>=6.170.2",
+    "matplotlib>=3.11.2",
+    "mlflow>=3.17.1",
+    "mutmut>=3.8.0",
+    "pytest>=9.1.1",
+    "pytest-asyncio>=1.4.0",
+    "pytest-cov>=7.1.0",
+    "ruff>=0.17.1",
+    "scikit-learn>=1.9.1",
+]
+
+[build-system]
+requires = ["uv_build>=0.11,<0.12"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-name = "handoff_gauge"
+module-root = ""
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+extend-exclude = ["mutants", "node_modules", ".next"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM", "ASYNC"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+markers = ["slow: replays the full cached calibration run (skipped by the edit hook)"]

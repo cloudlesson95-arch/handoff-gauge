@@ -1,0 +1,14 @@
+START-HERE.md
+PLAN.md
+CLAUDE.md
+.env
+.env.*
+.venv
+mlruns
+mutants
+logs
+.pytest_cache
+.ruff_cache
+.hypothesis
+.coverage
+htmlcov

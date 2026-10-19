@@ -1,0 +1,35 @@
+# private notes and local settings
+START-HERE.md
+PLAN.md
+CLAUDE.md
+.env
+.env.*
+!.env.example
+node_modules/
+.venv/
+.vercel/
+
+# The shared agent setup is committed (the line above only means the local root file)
+!.claude/CLAUDE.md
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.hypothesis/
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
+mutants/
+mlruns/
+mlflow.db
+logs/
+
+# Next.js
+/.next/
+/out/
+*.tsbuildinfo
+next-env.d.ts
+.DS_Store
