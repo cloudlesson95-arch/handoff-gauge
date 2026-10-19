@@ -1,0 +1,60 @@
+{"id": "tes-058", "text": "Did my refund go through? It's not on my statement.", "label": "refund_not_showing_up"}
+{"id": "tes-025", "text": "I'm trying to transfer money to another country. It's just pending and not sending. My account details are correct. Please help me.", "label": "pending_transfer"}
+{"id": "tes-052", "text": "I want to reverse a purchase. Can I cancel it?", "label": "request_refund"}
+{"id": "tes-009", "text": "Can I have it be delivered at a certain time?", "label": "card_delivery_estimate"}
+{"id": "tes-002", "text": "I still have not received my new card, I ordered over a week ago.", "label": "card_arrival"}
+{"id": "tes-056", "text": "Why isn't a recent refund on my statement?", "label": "refund_not_showing_up"}
+{"id": "tes-054", "text": "I am not seeing a refund in my statement.", "label": "refund_not_showing_up"}
+{"id": "tes-021", "text": "How do I freeze my account?", "label": "compromised_card"}
+{"id": "tes-030", "text": "I transferred the rent payment for my new place a couple days ago but the landlord says it's not there yet, despite showing up as done on my side. I checked the account number I sent it to and it's definitely correct. Can you please verify if the transaction really went through or not?", "label": "transfer_not_received_by_recipient"}
+{"id": "tes-007", "text": "When are cards delivered?", "label": "card_delivery_estimate"}
+{"id": "tes-011", "text": "I live in the US, how long will it take for delivery?", "label": "card_delivery_estimate"}
+{"id": "tes-059", "text": "Can you tell me why my refund is not showing in my statement?", "label": "refund_not_showing_up"}
+{"id": "tes-031", "text": "How long until my friend receives my transaction?", "label": "transfer_not_received_by_recipient"}
+{"id": "tes-010", "text": "When will the card arrive?", "label": "card_delivery_estimate"}
+{"id": "tes-036", "text": "I have multiple charges on the same transaction.", "label": "transaction_charged_twice"}
+{"id": "tes-049", "text": "What do I need to do to get a refund?", "label": "request_refund"}
+{"id": "tes-043", "text": "I don't recall making that payment?", "label": "card_payment_not_recognised"}
+{"id": "tes-044", "text": "I have a strange payment in my statement", "label": "card_payment_not_recognised"}
+{"id": "tes-042", "text": "There are some strange charges on my card that I didn't make from a few days ago.  Is my card stolen and if so should I cancel it?  Will I get refunded the charges?", "label": "card_payment_not_recognised"}
+{"id": "tes-023", "text": "Someone is using my account to do online shopping! Please freeze it asap", "label": "compromised_card"}
+{"id": "tes-035", "text": "The day before yesterday, I performed a transfer which was within this country. It still hasn't gone through. Can you check on that? The account number is definitely correct, as I've checked and double checked.", "label": "transfer_not_received_by_recipient"}
+{"id": "tes-040", "text": "Looks like my card payment was duplicated. I went to pay at the store earlier, got declined once,second time it works. App still stays pending for one of the payments. Can you please remove one of them as it's wrong and clearly was declined?", "label": "transaction_charged_twice"}
+{"id": "tes-019", "text": "How can I stop fraud on my account right now?", "label": "compromised_card"}
+{"id": "tes-005", "text": "still waiting on my new card", "label": "card_arrival"}
+{"id": "tes-024", "text": "I did transfer, why is it pending", "label": "pending_transfer"}
+{"id": "tes-014", "text": "I believe my credit card was stolen.", "label": "lost_or_stolen_card"}
+{"id": "tes-000", "text": "I still don't have my card after 2 weeks.  What should I do?", "label": "card_arrival"}
+{"id": "tes-028", "text": "For how long will my transfer be pending?", "label": "pending_transfer"}
+{"id": "tes-057", "text": "I am missing a refund.", "label": "refund_not_showing_up"}
+{"id": "tes-004", "text": "still waiting on that card", "label": "card_arrival"}
+{"id": "tes-017", "text": "Someone stole my wallet earlier today, not sure exactly when, probably on Piccadilly circus. Can you check if there were any attempts to use the card and obviously block it?", "label": "lost_or_stolen_card"}
+{"id": "tes-038", "text": "I've been charged more than once for the same transaction", "label": "transaction_charged_twice"}
+{"id": "tes-045", "text": "What should I do to get transactions off of my account if I didn't make them?  My card must have been compromised and I need to freeze it asap!", "label": "card_payment_not_recognised"}
+{"id": "tes-039", "text": "I got double charged for a payment so how do I fix that?", "label": "transaction_charged_twice"}
+{"id": "tes-055", "text": "Why can't I see a recent refund in my statement?", "label": "refund_not_showing_up"}
+{"id": "tes-029", "text": "Why hasn't my transfer gone through yet?", "label": "pending_transfer"}
+{"id": "tes-022", "text": "What should I do if I think someone is using my card.", "label": "compromised_card"}
+{"id": "tes-003", "text": "My card has not arrived yet, where is it?", "label": "card_arrival"}
+{"id": "tes-053", "text": "I need to cancel a purchase I made.", "label": "request_refund"}
+{"id": "tes-026", "text": "I double checked that I have the correct account details , they're right for sure. Transfer is still pending since forever. What should be done now?", "label": "pending_transfer"}
+{"id": "tes-034", "text": "I made a money transaction but the recipient can't see it", "label": "transfer_not_received_by_recipient"}
+{"id": "tes-048", "text": "How can I process a refund for something I purchased?", "label": "request_refund"}
+{"id": "tes-020", "text": "I think someone copied the numbers on my card and is using them.", "label": "compromised_card"}
+{"id": "tes-037", "text": "My card has been charged two separate times for a single transaction.", "label": "transaction_charged_twice"}
+{"id": "tes-015", "text": "Is a copy of the police report necessary for completing the report process?", "label": "lost_or_stolen_card"}
+{"id": "tes-032", "text": "I am still awaiting the completion of the transaction.", "label": "transfer_not_received_by_recipient"}
+{"id": "tes-018", "text": "My card is being used online to make a bunch of purchases! Someone else is using it fraudulently. Can you help me freeze it?", "label": "compromised_card"}
+{"id": "tes-050", "text": "I want to return an item.", "label": "request_refund"}
+{"id": "tes-016", "text": "My card is lost! What do I do now?", "label": "lost_or_stolen_card"}
+{"id": "tes-001", "text": "I ordered a card but it has not arrived. Help please!", "label": "card_arrival"}
+{"id": "tes-013", "text": "I lost my card", "label": "lost_or_stolen_card"}
+{"id": "tes-012", "text": "My entire gym bag, including my wallet, was stolen out of my locker today. Everything in my wallet is gone - how do I block the card to make it can't be used?", "label": "lost_or_stolen_card"}
+{"id": "tes-027", "text": "Transferring money in 2018 to another country shouldn't take this long. My transfer has been pending for too long. I verified my account details are correct.", "label": "pending_transfer"}
+{"id": "tes-008", "text": "I need my card quickly", "label": "card_delivery_estimate"}
+{"id": "tes-047", "text": "Can you freeze my account?  I just saw there are transactions on my account that I don't recognize.  How can I fix this?", "label": "card_payment_not_recognised"}
+{"id": "tes-033", "text": "I'm having a problem with a money transfer.  I sent some money to a friend a couple of hours ago, and they haven't received it yet.  Why hasn't it gotten to them? How long do transfers need to go through?", "label": "transfer_not_received_by_recipient"}
+{"id": "tes-006", "text": "When can I expect to receive my new card?", "label": "card_delivery_estimate"}
+{"id": "tes-041", "text": "There is more than one of the same transaction on my account.", "label": "transaction_charged_twice"}
+{"id": "tes-046", "text": "I have a payment I didn't do", "label": "card_payment_not_recognised"}
+{"id": "tes-051", "text": "Would I be able to get a refund for something I bought?", "label": "request_refund"}

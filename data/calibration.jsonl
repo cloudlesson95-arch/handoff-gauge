@@ -1,0 +1,120 @@
+{"id": "cal-026", "text": "What should I do if I think my card was stolen?", "label": "lost_or_stolen_card"}
+{"id": "cal-109", "text": "Im not sure if a seller is giving me my money back! I asked them to refund my money for the item but It's been a week now and still nothing has been given back to me. Can you resolve this for me?", "label": "refund_not_showing_up"}
+{"id": "cal-102", "text": "My product was faulty.", "label": "request_refund"}
+{"id": "cal-020", "text": "Can I have my card delivered on Tuesday?", "label": "card_delivery_estimate"}
+{"id": "cal-043", "text": "What do I do if someone used my card without my permission?", "label": "compromised_card"}
+{"id": "cal-014", "text": "I need my card soon.", "label": "card_delivery_estimate"}
+{"id": "cal-066", "text": "I have not received the completed transaction.", "label": "transfer_not_received_by_recipient"}
+{"id": "cal-032", "text": "oh my god I lost my card! what should I do?", "label": "lost_or_stolen_card"}
+{"id": "cal-081", "text": "I have a duplicate charge", "label": "transaction_charged_twice"}
+{"id": "cal-027", "text": "Could you please freeze my card immediately?", "label": "lost_or_stolen_card"}
+{"id": "cal-012", "text": "Can I have it by a certain date?", "label": "card_delivery_estimate"}
+{"id": "cal-093", "text": "There is a payment I don't recognize", "label": "card_payment_not_recognised"}
+{"id": "cal-044", "text": "I think my card has been used by somebody else since I was never in the little town where some transactions on this bill have come from. Please stop this right away.", "label": "compromised_card"}
+{"id": "cal-074", "text": "I think I was double charged", "label": "transaction_charged_twice"}
+{"id": "cal-067", "text": "I sent a transfer to a friend that needs it urgently. It has already been 2 hours and still hasn't come through to her. How long does it normally take?", "label": "transfer_not_received_by_recipient"}
+{"id": "cal-011", "text": "I need to find out where the card is that I ordered.", "label": "card_arrival"}
+{"id": "cal-095", "text": "I didn't make a payment at this business.", "label": "card_payment_not_recognised"}
+{"id": "cal-069", "text": "Why hasn't the money transfer arrived yet?", "label": "transfer_not_received_by_recipient"}
+{"id": "cal-054", "text": "How come I have pending transfers?", "label": "pending_transfer"}
+{"id": "cal-041", "text": "What should I do if I think someone stole my details and used my information to make some transactions?", "label": "compromised_card"}
+{"id": "cal-005", "text": "Where is the tracking number for the card?", "label": "card_arrival"}
+{"id": "cal-101", "text": "i haven't received my order and want a refund", "label": "request_refund"}
+{"id": "cal-116", "text": "I returned something to a  store but can't see my refund.", "label": "refund_not_showing_up"}
+{"id": "cal-025", "text": "i need help, i lost my card", "label": "lost_or_stolen_card"}
+{"id": "cal-060", "text": "What do I do if I completed a money transfer but the recipient hasn't received it?", "label": "transfer_not_received_by_recipient"}
+{"id": "cal-037", "text": "Someone might have had access to my card.", "label": "compromised_card"}
+{"id": "cal-056", "text": "Why is it taking so long for my pending transaction to post as cleared?", "label": "pending_transfer"}
+{"id": "cal-046", "text": "What should I do if I think that someone might be using me card?", "label": "compromised_card"}
+{"id": "cal-002", "text": "My card hasn't shown up yet.", "label": "card_arrival"}
+{"id": "cal-042", "text": "My card was used without my permission, what do I do?", "label": "compromised_card"}
+{"id": "cal-015", "text": "I need my card immediately.", "label": "card_delivery_estimate"}
+{"id": "cal-083", "text": "Hello,  I am a college student who I recently attended my high school reunion at a local restaurant. I paid with my credit card and now my transaction history reflects a second charge of the seemingly same payment. What could be the reason for this?  Is there any way to have the fraudulent  payment credited back onto my card?", "label": "transaction_charged_twice"}
+{"id": "cal-092", "text": "This card payment isn't is recognition.", "label": "card_payment_not_recognised"}
+{"id": "cal-031", "text": "Could you assist me in finding my lost card?", "label": "lost_or_stolen_card"}
+{"id": "cal-105", "text": "I received the wrong color and size, can I return it?", "label": "request_refund"}
+{"id": "cal-059", "text": "Is my transfer pending?", "label": "pending_transfer"}
+{"id": "cal-030", "text": "My card has gone missing.", "label": "lost_or_stolen_card"}
+{"id": "cal-049", "text": "My transfer is stuck pending? How do we fix it to it goes through?", "label": "pending_transfer"}
+{"id": "cal-113", "text": "When will I be able to see my refund?", "label": "refund_not_showing_up"}
+{"id": "cal-096", "text": "I decided I no long want something that I ordered, and want a refund. How do I go about doing that?", "label": "request_refund"}
+{"id": "cal-077", "text": "I got charged in double and want a refund", "label": "transaction_charged_twice"}
+{"id": "cal-080", "text": "I have a transaction showing multiple times.", "label": "transaction_charged_twice"}
+{"id": "cal-052", "text": "How long do EU transfers actually take? I bought something online a couple days ago, sent the money immediately online but the seller says it's still not there yet.", "label": "pending_transfer"}
+{"id": "cal-064", "text": "I transferred money and it hasn't come yet", "label": "transfer_not_received_by_recipient"}
+{"id": "cal-100", "text": "I made a purchase and would like to get a refund for what I bought can you have the money put back in my account?", "label": "request_refund"}
+{"id": "cal-108", "text": "There is a refund missing.", "label": "refund_not_showing_up"}
+{"id": "cal-004", "text": "Could you send me and up date on the arrival of my card?", "label": "card_arrival"}
+{"id": "cal-091", "text": "There is a strange card payment I don't recognise.", "label": "card_payment_not_recognised"}
+{"id": "cal-039", "text": "What do I do if I think someone has used my card without permission? I can see a few transactions I don't recognize.", "label": "compromised_card"}
+{"id": "cal-088", "text": "My app shows a payment I didn't make", "label": "card_payment_not_recognised"}
+{"id": "cal-107", "text": "Can I cancel an order if I haven't received the item yet? And how can I get my money back? Please help. Thanks.", "label": "request_refund"}
+{"id": "cal-034", "text": "What do I do if my card is stolen?", "label": "lost_or_stolen_card"}
+{"id": "cal-009", "text": "Can you tell me why I haven't received my new card yet?", "label": "card_arrival"}
+{"id": "cal-086", "text": "There's a payment with my card that I didn't perform. I don't know that name shown.", "label": "card_payment_not_recognised"}
+{"id": "cal-085", "text": "There's a payment in the app that I didn't authorize.", "label": "card_payment_not_recognised"}
+{"id": "cal-089", "text": "My statement indicates I made a payment to an unfamiliar merchant.", "label": "card_payment_not_recognised"}
+{"id": "cal-003", "text": "Can you please tell me where my card is? I ordered it 2 weeks ago!", "label": "card_arrival"}
+{"id": "cal-038", "text": "I see some transactions that I don't recognize.  I think someone stole my details.", "label": "compromised_card"}
+{"id": "cal-114", "text": "Hi! A seller that I requested a refund from a long time ago has yet to send the money into my account, even though I keep checking it. Can the seller be contacted by you guys to see what's going on?", "label": "refund_not_showing_up"}
+{"id": "cal-076", "text": "Hi, I just looked at my card transactions and saw that I've been charged twice for a restaurant I went to this week. Can you remove the double charge, please?", "label": "transaction_charged_twice"}
+{"id": "cal-097", "text": "I would like to cancel my purchase.", "label": "request_refund"}
+{"id": "cal-028", "text": "What is the first step that I should take after my card has been stolen?", "label": "lost_or_stolen_card"}
+{"id": "cal-082", "text": "Please tell me why the same transaction is showing up on my account more than once.", "label": "transaction_charged_twice"}
+{"id": "cal-008", "text": "maximum how many days get the courier?", "label": "card_arrival"}
+{"id": "cal-024", "text": "I lost my wallet and all my cards were in it.", "label": "lost_or_stolen_card"}
+{"id": "cal-007", "text": "It's been two weeks and I haven't gotten my card, what do I do?", "label": "card_arrival"}
+{"id": "cal-106", "text": "I need to cancel a purchase that I made the other day.", "label": "request_refund"}
+{"id": "cal-061", "text": "Why hasn't the transaction I did to my friend arrive yet?", "label": "transfer_not_received_by_recipient"}
+{"id": "cal-013", "text": "Can i choose a specific delivery date?", "label": "card_delivery_estimate"}
+{"id": "cal-073", "text": "My card got charged twice for the same thing!", "label": "transaction_charged_twice"}
+{"id": "cal-112", "text": "I am still waiting to find out the status of my refund. I have made previous attempts to find out what the status is to no avail. Will you please look into this for me?", "label": "refund_not_showing_up"}
+{"id": "cal-079", "text": "Looks like my card payment was made twice by mistake. I went to pay at the store earlier which rejected once, second time it worked. App is on pending for one of the payments. Can you please remove one of them as it's wrong and clearly was declined?", "label": "transaction_charged_twice"}
+{"id": "cal-119", "text": "My refund is not showing.", "label": "refund_not_showing_up"}
+{"id": "cal-071", "text": "When will the transaction be done?", "label": "transfer_not_received_by_recipient"}
+{"id": "cal-058", "text": "Transfers may show up as pending for up to one business day while they are processed, and then they'll depart for the beneficiary accounts. Please confirm that you have correctly entered your account details. SEPA transfers typically take up to two working days, while SWIFT transfers can take up to five working days.", "label": "pending_transfer"}
+{"id": "cal-006", "text": "Have you sent out my card yet?", "label": "card_arrival"}
+{"id": "cal-065", "text": "I sent money about 5 days ago and the recipient has not received the money yet.", "label": "transfer_not_received_by_recipient"}
+{"id": "cal-016", "text": "Can I pay more to get it deliver quicker?", "label": "card_delivery_estimate"}
+{"id": "cal-040", "text": "I just got an email in confirming my purchase with my card. I login to the mobile app on the card and found out there are several purchase were made without me aware of it. Evidently someone had stole my card information and made these fraudulent purchase. I need the transaction to be reverse and have my card suspended.", "label": "compromised_card"}
+{"id": "cal-072", "text": "I was charged twice for the same thing.", "label": "transaction_charged_twice"}
+{"id": "cal-078", "text": "There is a duplicate charge on my account.", "label": "transaction_charged_twice"}
+{"id": "cal-047", "text": "card is being used by someone else", "label": "compromised_card"}
+{"id": "cal-068", "text": "How long will it be  before the person I sent money to is able to see it?", "label": "transfer_not_received_by_recipient"}
+{"id": "cal-103", "text": "I want to talk about an order that I placed a long time ago and have yet to receive. I demand a refund due to lack of delivery of the product!  I refuse to pay for something I never got.", "label": "request_refund"}
+{"id": "cal-018", "text": "Send me my card now! ASAP", "label": "card_delivery_estimate"}
+{"id": "cal-000", "text": "Is there a reason my new card hasn't arrived?", "label": "card_arrival"}
+{"id": "cal-036", "text": "My card must have used my card as there are some transactions that I haven't done myself..", "label": "compromised_card"}
+{"id": "cal-033", "text": "Can you tell me the status of my new card?", "label": "lost_or_stolen_card"}
+{"id": "cal-023", "text": "Can you tell me when my card will arrive?", "label": "card_delivery_estimate"}
+{"id": "cal-075", "text": "Why did my card get charged twice for a transaction?", "label": "transaction_charged_twice"}
+{"id": "cal-062", "text": "The recipient can not locate funds.", "label": "transfer_not_received_by_recipient"}
+{"id": "cal-001", "text": "How long until my new card gets here?", "label": "card_arrival"}
+{"id": "cal-094", "text": "I believe there is a mistake because a payment I didn't make shows in my app.", "label": "card_payment_not_recognised"}
+{"id": "cal-084", "text": "I did not charge my account for that transaction.  That's an error.", "label": "card_payment_not_recognised"}
+{"id": "cal-099", "text": "Can I return an item?", "label": "request_refund"}
+{"id": "cal-098", "text": "Can i cancel this purchase?", "label": "request_refund"}
+{"id": "cal-022", "text": "What is delivery speed to the United States?", "label": "card_delivery_estimate"}
+{"id": "cal-115", "text": "I keep checking my statements but nothing shows up. I requested a refund a long time ago but seems it's not reaching my account for some reason. Would you please help me get the money back from the seller.", "label": "refund_not_showing_up"}
+{"id": "cal-019", "text": "I need my card right away.", "label": "card_delivery_estimate"}
+{"id": "cal-029", "text": "help, lost my card", "label": "lost_or_stolen_card"}
+{"id": "cal-048", "text": "I bought something on line a and the seller hasn't received the money I sent could you please tell me how long an EU transfer takes?", "label": "pending_transfer"}
+{"id": "cal-087", "text": "If I see a payment in the app that I don't recognize, what should I do?", "label": "card_payment_not_recognised"}
+{"id": "cal-045", "text": "I have some transactions on my account I did not make. Can you cancel my card and prevent further use.", "label": "compromised_card"}
+{"id": "cal-053", "text": "the transfer went through but now it has been pending for quite a while. i need this to go through already", "label": "pending_transfer"}
+{"id": "cal-090", "text": "Why do I have a strange payment on my statement?", "label": "card_payment_not_recognised"}
+{"id": "cal-110", "text": "I contacted a seller about a refund last week but he still hasn't returned my money. I am frustrated and need these funds. Please help me get my money back.", "label": "refund_not_showing_up"}
+{"id": "cal-118", "text": "I requested a refund but am unable to see it in my account. Why is that?", "label": "refund_not_showing_up"}
+{"id": "cal-055", "text": "I did a transfer but its still pending", "label": "pending_transfer"}
+{"id": "cal-104", "text": "I didn't enjoy my tutor session and want a refund back. How do I go about doing this?", "label": "request_refund"}
+{"id": "cal-017", "text": "How long is delivery to the US?", "label": "card_delivery_estimate"}
+{"id": "cal-035", "text": "How do I report my card as lost or stolen?", "label": "lost_or_stolen_card"}
+{"id": "cal-070", "text": "Why doesn't the person I sent money to see that transfer yet?", "label": "transfer_not_received_by_recipient"}
+{"id": "cal-051", "text": "Will my transfer be done soon?", "label": "pending_transfer"}
+{"id": "cal-057", "text": "Why is the transfer showing pending?", "label": "pending_transfer"}
+{"id": "cal-021", "text": "how long should I expect to wait for my card to arrive?", "label": "card_delivery_estimate"}
+{"id": "cal-010", "text": "When will I get my new card?", "label": "card_arrival"}
+{"id": "cal-063", "text": "I've been waiting since Friday, where is my money?", "label": "transfer_not_received_by_recipient"}
+{"id": "cal-111", "text": "my refund has not hit my account yet", "label": "refund_not_showing_up"}
+{"id": "cal-117", "text": "I asked for a refund but its not here yet", "label": "refund_not_showing_up"}
+{"id": "cal-050", "text": "How long does EU transfer take? I bought something online a couple days ago , sent the money immediately online but the seller says it is still not there yet", "label": "pending_transfer"}
