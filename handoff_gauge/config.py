@@ -30,6 +30,8 @@ TEMPERATURE = 1.0
 N_SAMPLES = 3
 MAX_OUTPUT_TOKENS = 400  # gpt-oss spends part of this on (hidden) reasoning
 TARGET_PRECISION = 0.90
+# The threshold must meet the target at the one-sided 90% Wilson lower bound of precision.
+PRECISION_BOUND_Z = 1.2816
 
 # Kept a little under the provider's free-tier limits for this model.
 REQUESTS_PER_MINUTE = 25

@@ -146,6 +146,17 @@ class ThresholdChoice:
     precision: float
     coverage: float
     n_auto: int
+    hits: int = 0
+
+
+def wilson_lower_bound(hits: int, n: int, z: float) -> float:
+    """Lower end of the Wilson score interval for a proportion; equals hits / n when z = 0."""
+    if n <= 0:
+        return 0.0
+    p = hits / n
+    centre = p + z * z / (2 * n)
+    margin = z * math.sqrt(p * (1 - p) / n + z * z / (4 * n * n))
+    return max(0.0, (centre - margin) / (1 + z * z / n))
 
 
 def operating_points(
@@ -161,16 +172,24 @@ def operating_points(
         is_last_of_tie = i + 1 == len(pairs) or pairs[i + 1][0] != score
         if is_last_of_tie:
             n = i + 1
-            points.append(ThresholdChoice(score, hits / n, n / len(pairs), n))
+            points.append(ThresholdChoice(score, hits / n, n / len(pairs), n, hits))
     return points
 
 
 def choose_threshold(
-    scores: Sequence[float], correct: Sequence[bool], target_precision: float
+    scores: Sequence[float], correct: Sequence[bool], target_precision: float, z: float = 0.0
 ) -> ThresholdChoice:
     """Lowest threshold whose auto-handled cases (score >= threshold) reach the target
-    precision, i.e. the most coverage that still meets the target."""
-    meeting = [p for p in operating_points(scores, correct) if p.precision >= target_precision]
+    precision, i.e. the most coverage that still meets the target.
+
+    With z > 0 the Wilson lower bound of the precision must reach the target, not just the
+    point estimate: a cut-off that only just meets the target on the fitting data would
+    miss it on new data about half the time.
+    """
+    meeting = [
+        p for p in operating_points(scores, correct)
+        if wilson_lower_bound(p.hits, p.n_auto, z) >= target_precision
+    ]
     if not meeting:
         return ThresholdChoice(None, 0.0, 0.0, 0)
     return min(meeting, key=lambda p: p.threshold if p.threshold is not None else math.inf)

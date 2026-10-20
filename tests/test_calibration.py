@@ -10,6 +10,7 @@ from handoff_gauge.calibration import (
     map_from_dict,
     operating_points,
     reliability_bins,
+    wilson_lower_bound,
 )
 
 
@@ -88,6 +89,23 @@ def test_choose_threshold_takes_the_most_coverage_meeting_target() -> None:
     assert choice.threshold == 0.7
     assert choice.precision == 1.0
     assert choice.coverage == pytest.approx(4 / 6)
+
+
+def test_wilson_lower_bound() -> None:
+    assert wilson_lower_bound(9, 10, 0.0) == 0.9
+    assert wilson_lower_bound(9, 10, 1.2816) == pytest.approx(0.7175, abs=1e-3)
+    assert wilson_lower_bound(90, 100, 1.2816) > wilson_lower_bound(9, 10, 1.2816)
+    assert wilson_lower_bound(0, 0, 1.0) == 0.0
+
+
+def test_margin_rejects_a_cut_that_only_just_meets_the_target() -> None:
+    # Auto-handling everything is exactly 90% precise here: it meets the target only in-sample.
+    scores = [0.9] * 50 + [0.5] * 50
+    correct = [True] * 50 + [True] * 40 + [False] * 10
+    assert choose_threshold(scores, correct, 0.9).threshold == 0.5
+    with_margin = choose_threshold(scores, correct, 0.9, z=1.2816)
+    assert with_margin.threshold == 0.9
+    assert with_margin.n_auto == 50 and with_margin.hits == 50
 
 
 def test_choose_threshold_returns_none_when_target_unreachable() -> None:

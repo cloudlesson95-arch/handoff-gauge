@@ -1,0 +1,21 @@
+{
+  "estimator": "combined",
+  "estimator_params": {
+    "bias": 1.2593710493107704,
+    "w_agreement": 0.7102077348762419,
+    "w_verbalized": 0.2525542997429641
+  },
+  "method": "platt",
+  "map": {
+    "kind": "platt",
+    "a": 80.12179847057875,
+    "b": -69.80376210953088
+  },
+  "threshold": 0.9145031937876782,
+  "target_precision": 0.9,
+  "precision_bound_z": 1.2816,
+  "model": "openai/gpt-oss-20b",
+  "n_samples": 3,
+  "temperature": 1.0,
+  "fitted_on": "calibration split (120 messages)"
+}
