@@ -61,6 +61,11 @@ jobs:
           print(f"Mutation score: {caught}/{tested} = {100 * caught / max(tested, 1):.1f}%")
           print("Stats: " + ", ".join(f"{k}={v}" for k, v in s.items()))
           EOF
+      - name: Show the diff of every surviving mutant
+        run: |
+          echo "::group::Surviving mutants"
+          uv run mutmut results 2>/dev/null | grep ': survived' | cut -d: -f1 | tr -d ' '             | while read -r mutant; do uv run mutmut show "$mutant"; done
+          echo "::endgroup::"
       - uses: actions/upload-artifact@v4
         with:
           name: mutmut-stats
