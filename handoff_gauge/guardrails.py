@@ -80,22 +80,57 @@ def chain(*guardrails: Guardrail) -> Guardrail:
 # --- input side ---------------------------------------------------------------------------
 
 EMAIL = re.compile(r"[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)*\.[A-Za-z]{2,}")
-# 13 or more digits with optional single separators: card (or account) numbers.
-CARD = re.compile(r"(?<!\d)\d(?:[ .-]?\d){12,}(?!\d)")
-# 9 or more digits with phone-style separators, optionally starting with +.
-PHONE = re.compile(r"(?<![\w+])\+?\d(?:[ ()-]{0,2}\d){8,}(?!\d)")
+# 9 or more digits joined by short separators, optionally starting with + or "(". One run is
+# one number, so adjacent numbers cannot leave a fragment (an area code) behind.
+NUMBER = re.compile(r"(?<![\w+(])[+(]?\d(?:[ ().\-/]{0,3}\d){8,}(?!\d)")
+# Dates and times are kept as they are, so that "2024-03-12 14:30" is not read as a phone.
+DATE_TIME = re.compile(
+    r"(?<![\d.\-/])(?:\d{4}-\d{1,2}-\d{1,2}|\d{1,2}[-./]\d{1,2}[-./](?:\d{4}|\d{2}))(?![\d.\-/])"
+    r"|(?<![\d:])\d{1,2}:\d{2}(?![\d:])"
+)
+PLACEHOLDER = re.compile(r"\[(?:EMAIL|CARD|PHONE)\]")
+ZERO_WIDTH = re.compile("[­​-‏⁠﻿]")
+_HELD = 0xE000  # private-use characters stand in for held dates while redacting
 
-PII_PATTERNS = (("EMAIL", EMAIL), ("CARD", CARD), ("PHONE", PHONE))
+
+
+def _number_label(number: str) -> str:
+    """13+ digits without a + or ( prefix is a card (or account) number, the rest phones."""
+    digits = sum(ch.isdigit() for ch in number)
+    return "CARD" if digits >= 13 and not number.startswith(("+", "(")) else "PHONE"
 
 
 def redact(text: str) -> tuple[str, dict[str, int]]:
     """Replace emails, card numbers and phone numbers with placeholders; count each kind."""
+    held: list[str] = []
+
+    def hold(match: re.Match[str]) -> str:
+        held.append(match.group())
+        return chr(_HELD + len(held) - 1)
+
+    text = DATE_TIME.sub(hold, text.replace(chr(_HELD), ""))
     counts: dict[str, int] = {}
-    for label, pattern in PII_PATTERNS:
-        text, n = pattern.subn(f"[{label}]", text)
-        if n:
-            counts[label] = n
+
+    def replace(label: str) -> str:
+        counts[label] = counts.get(label, 0) + 1
+        return f"[{label}]"
+
+    text = EMAIL.sub(lambda m: replace("EMAIL"), text)
+    text = NUMBER.sub(lambda m: replace(_number_label(m.group())), text)
+    if held:
+        text = re.sub(f"[{chr(_HELD)}-{chr(_HELD + len(held) - 1)}]",
+                      lambda m: held[ord(m.group()) - _HELD], text)
     return text, counts
+
+
+def sanitize(text: str) -> tuple[str, dict[str, int]]:
+    """What every prompt goes through: zero-width characters removed (they could split a card
+    number or a keyword), then PII redacted. Offline collection and the live chain share it."""
+    return redact(ZERO_WIDTH.sub("", text))
+
+
+def without_placeholders(text: str) -> str:
+    return PLACEHOLDER.sub(" ", text)
 
 
 class PiiRedaction(Guardrail):
@@ -103,7 +138,7 @@ class PiiRedaction(Guardrail):
     stage = "input"
 
     def check(self, ctx: TriageContext) -> GuardrailResult:
-        ctx.text, counts = redact(ctx.text)
+        ctx.text, counts = sanitize(ctx.text)
         if counts:
             found = ", ".join(f"{n} {label.lower()}" for label, n in counts.items())
             ctx.notes.append(f"Redacted before the model saw it: {found}.")
@@ -115,7 +150,7 @@ class EmptyMessage(Guardrail):
     stage = "input"
 
     def check(self, ctx: TriageContext) -> GuardrailResult:
-        if sum(ch.isalpha() for ch in ctx.text) < 2:
+        if sum(ch.isalpha() for ch in without_placeholders(ctx.text)) < 2:
             return self.trip("The message is empty, so there is nothing to classify.")
         return self.passed()
 
@@ -125,7 +160,9 @@ INJECTION_PATTERNS = [
     r"\b(system|developer)\s*(prompt|message|mode)\b",
     r"\b(reveal|show|print|repeat|leak)\b.{0,30}\b(prompt|instructions?)\b",
     r"\byou are now\b|\bact as\b|\bpretend to be\b|\bjailbreak\b",
-    r"\bconfidence\b.{0,20}\b(1(\.0+)?|100\s*%)(?!\d)",
+    # telling the agent which confidence to report
+    r"\b(set|with|give|answer|report|use|put)\b.{0,15}\bconfidence\b",
+    r"\bconfidence\b\s*(?:[:=]|of|to|at|is|should be)?\s*(?:0?\.\d+|1(?:\.0+)?|\d{1,3}\s*%)",
     r"\b(skip|bypass|avoid)\b.{0,30}\b(review|human|queue|guardrails?)\b",
     r"</?\s*(system|assistant|instruction)\s*>",
 ]
@@ -137,20 +174,23 @@ class PromptInjection(Guardrail):
     stage = "input"
 
     def check(self, ctx: TriageContext) -> GuardrailResult:
-        if INJECTION.search(ctx.text):
+        # Line breaks and zero-width characters must not split a pattern.
+        text = re.sub(r"\s+", " ", ZERO_WIDTH.sub("", ctx.text))
+        if INJECTION.search(text):
             return self.trip("The message tries to give the agent instructions.")
         return self.passed()
 
 
-# Word stems a message about these banking intents nearly always contains.
+# Words a message about these banking intents nearly always contains: stems that may take
+# endings, then short words that must stand alone ("atm" is not "atmosphere").
 BANKING_TERMS = re.compile(
-    r"\b(card|transfer|transf|pay|paid|payment|refund|charg|account|money|bank|transaction|"
-    r"deliver|arriv|receiv|sent|send|stolen|steal|lost|lose|fraud|hack|compromis|pin|atm|"
-    r"balance|statement|fee|cash|withdraw|debit|credit|purchase|merchant|order|mail|post|"
-    r"pending|twice|double|duplicate|return|reimburs|recipient|beneficiar|fund|\$|€|£|"
-    r"euro|dollar|pound|price|cost|bought|buy|shop|store|seller|item|track|ship|come|came|"
-    r"wait|still|yet|missing|recogni|unknown|dispute|cancel|block|freeze|frozen|use[ds]?|"
-    r"courier|product|faulty|police)",
+    r"\b(?:transf|payment|refund|charg|account|money|bank|transaction|deliver|arriv|receiv|"
+    r"stolen|steal|fraud|hack|compromis|balance|statement|withdraw|debit|credit|purchase|"
+    r"merchant|order|pending|twice|double|duplicate|return|reimburs|recipient|beneficiar|"
+    r"euro|dollar|pound|price|bought|shop|seller|track|ship|wait|missing|recogni|unknown|"
+    r"dispute|cancel|block|freez|frozen|courier|product|faulty|police)"
+    r"|\b(?:cards?|pay|paid|sent|send|lost|lose|pin|atm|fees?|cash|mail|post|funds?|cost|"
+    r"buy|store|items?|come|came|still|yet|uses?|used)\b|[$€£]",
     re.IGNORECASE,
 )
 
@@ -160,7 +200,7 @@ class OffTopic(Guardrail):
     stage = "input"
 
     def check(self, ctx: TriageContext) -> GuardrailResult:
-        if not BANKING_TERMS.search(ctx.text):
+        if not BANKING_TERMS.search(without_placeholders(ctx.text)):
             return self.trip("The message does not look like a card, payment or refund request.")
         return self.passed()
 
@@ -205,7 +245,8 @@ class AllowedLabel(Guardrail):
     def check(self, ctx: TriageContext) -> GuardrailResult:
         top = majority_intent(ctx.answers)
         if top not in INTENTS:
-            return self.trip(f"The model's most common answer ({top!r}) is not an allowed intent.")
+            shown = repr(top[:40] + "…" if top and len(top) > 40 else top)
+            return self.trip(f"The model's most common answer ({shown}) is not an allowed intent.")
         unknown = sum(1 for a in ctx.answers if a is not None and a.intent not in INTENTS)
         if unknown:
             ctx.answers = [a if a is None or a.intent in INTENTS else None for a in ctx.answers]

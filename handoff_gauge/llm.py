@@ -90,14 +90,17 @@ class GroqBackend:
             )
         if response.status_code >= 400:
             raise LLMError(f"HTTP {response.status_code}: {_error_code(response)}")
-        data = response.json()
-        usage = data.get("usage") or {}
-        return ChatResponse(
-            content=data["choices"][0]["message"].get("content") or "",
-            input_tokens=int(usage.get("prompt_tokens", 0)),
-            output_tokens=int(usage.get("completion_tokens", 0)),
-            model=data.get("model", request.model),
-        )
+        try:
+            data = response.json()
+            usage = data.get("usage") or {}
+            return ChatResponse(
+                content=data["choices"][0]["message"].get("content") or "",
+                input_tokens=int(usage.get("prompt_tokens", 0)),
+                output_tokens=int(usage.get("completion_tokens", 0)),
+                model=data.get("model", request.model),
+            )
+        except (ValueError, KeyError, IndexError, TypeError, AttributeError) as exc:
+            raise LLMError(f"malformed response ({type(exc).__name__})") from exc
 
 
 def _retry_after(response: httpx.Response) -> float:
@@ -183,12 +186,14 @@ def cache_key(request: ChatRequest) -> str:
         "messages": request.messages,
         "temperature": request.temperature,
         "seed": request.seed,
+        "max_tokens": request.max_tokens,
     }
     return hashlib.sha256(json.dumps(payload, sort_keys=True).encode()).hexdigest()
 
 
 class JsonlCache:
-    """Append-only JSONL file of responses. A corrupt line is skipped, never fatal."""
+    """Append-only JSONL file of successful responses. A corrupt line is skipped and a failed
+    write is ignored: the cache never decides the outcome of a request."""
 
     def __init__(self, path: Path | None, *, persist: bool = True) -> None:
         self.path = path
@@ -213,7 +218,10 @@ class JsonlCache:
         record = {"key": key, **record}
         self._records[key] = record
         if self.persist:
-            await asyncio.to_thread(self._append, record)
+            try:
+                await asyncio.to_thread(self._append, record)
+            except OSError:
+                self.persist = False  # read-only or full disk: keep serving from memory
 
     def _append(self, record: dict[str, Any]) -> None:
         assert self.path is not None
@@ -279,8 +287,10 @@ class LLMClient:
             if cached is not None:
                 sample = _sample_from_record(cached)
             else:
-                sample, cacheable = await self._call(request)
-                if cacheable and self.cache is not None:
+                sample = await self._call(request)
+                # Only answers are cached: an auth, network or server failure is retried on
+                # the next run instead of being replayed forever.
+                if sample.error is None and self.cache is not None:
                     await self.cache.put(key, _record_from_sample(sample))
             span.set_attributes(
                 {
@@ -295,10 +305,10 @@ class LLMClient:
                 span.set_status(StatusCode.ERROR, sample.error)
         return sample
 
-    async def _call(self, request: ChatRequest) -> tuple[LLMSample, bool]:
-        """Returns the sample and whether it may be cached (terminal errors are, exhausted
-        retries are not, so a later run can fill them in)."""
-        estimate = sum(len(m["content"]) for m in request.messages) // 4 + 100
+    async def _call(self, request: ChatRequest) -> LLMSample:
+        # Reserve the prompt (about 4 characters a token) plus the whole output budget;
+        # settle() corrects it to the real usage afterwards.
+        estimate = sum(len(m["content"]) for m in request.messages) // 4 + request.max_tokens
         async with self._semaphore:
             for attempt in range(self.max_retries + 1):
                 reservation = (
@@ -310,25 +320,22 @@ class LLMClient:
                     if reservation is not None:
                         self.limiter.settle(reservation, 0)  # the request still counts
                     if attempt == self.max_retries:
-                        return self._failed(request, f"retries exhausted: {exc}"), False
+                        return self._failed(request, f"retries exhausted: {exc}")
                     await self._sleep(self._backoff(attempt, exc.retry_after))
                     continue
                 except LLMError as exc:
                     if reservation is not None:
                         self.limiter.settle(reservation, 0)
-                    return self._failed(request, str(exc)), True
+                    return self._failed(request, str(exc))
                 if reservation is not None:
                     self.limiter.settle(reservation, response.input_tokens + response.output_tokens)
-                return (
-                    LLMSample(
-                        seed=request.seed,
-                        content=response.content,
-                        model=response.model,
-                        temperature=request.temperature,
-                        input_tokens=response.input_tokens,
-                        output_tokens=response.output_tokens,
-                    ),
-                    True,
+                return LLMSample(
+                    seed=request.seed,
+                    content=response.content,
+                    model=response.model,
+                    temperature=request.temperature,
+                    input_tokens=response.input_tokens,
+                    output_tokens=response.output_tokens,
                 )
         raise AssertionError("unreachable")
 

@@ -203,8 +203,13 @@ def main(target: float) -> None:
             rows.append(row)
 
     candidates = [r for r in rows if r["method"] != "identity"]
-    meeting = [r for r in candidates if r["cv_precision"] >= target] or candidates
-    chosen = max(meeting, key=lambda r: (r["cv_coverage"], -r["cv_brier"]))
+    meeting = [r for r in candidates if r["cv_precision"] >= target]
+    if meeting:
+        chosen = max(meeting, key=lambda r: (r["cv_coverage"], -r["cv_brier"]))
+    else:
+        # Nothing meets the target out of sample: pick the most precise, never the loosest.
+        print("warning: no estimator meets the target precision in cross-validation")
+        chosen = max(candidates, key=lambda r: (r["cv_precision"], -r["cv_brier"]))
     fitted: Fitted = chosen["_fitted"]
     probs = chosen["_probs"]
     e2e = auto_stats(probs, test, fitted.threshold, end_to_end=True)

@@ -11,6 +11,14 @@ from dataclasses import dataclass
 from typing import Any
 
 
+def sigmoid(z: float) -> float:
+    """Logistic function without overflow for large |z|."""
+    if z >= 0:
+        return 1.0 / (1.0 + math.exp(-z))
+    e = math.exp(z)
+    return e / (1.0 + e)
+
+
 class CalibrationMap(ABC):
     kind: str
 
@@ -72,11 +80,7 @@ class PlattMap(CalibrationMap):
         self.b = float(b)
 
     def apply(self, score: float) -> float:
-        z = self.a * score + self.b
-        if z >= 0:
-            return 1.0 / (1.0 + math.exp(-z))
-        e = math.exp(z)
-        return e / (1.0 + e)
+        return sigmoid(self.a * score + self.b)
 
     def to_dict(self) -> dict[str, Any]:
         return {"kind": self.kind, "a": self.a, "b": self.b}

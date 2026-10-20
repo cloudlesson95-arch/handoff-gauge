@@ -1,9 +1,9 @@
 import json
-from pathlib import Path
 
 import pytest
 
 from handoff_gauge.agent import TriageAgent, build_agent
+from handoff_gauge.decider import CalibrationProfile
 from handoff_gauge.llm import ChatBackend
 
 
@@ -32,12 +32,11 @@ def clock() -> FakeClock:
 
 
 @pytest.fixture
-def make_agent(tmp_path: Path):
+def make_agent():
     """An agent on a fake backend, no cache file and the default (uncalibrated) profile."""
 
     def _make(backend: ChatBackend, **kwargs) -> TriageAgent:
-        return build_agent(
-            backend=backend, cache_path=None, profile_path=tmp_path / "none.json", **kwargs
-        )
+        kwargs.setdefault("profile", CalibrationProfile())
+        return build_agent(backend=backend, cache_path=None, **kwargs)
 
     return _make

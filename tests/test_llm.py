@@ -1,6 +1,5 @@
 import asyncio
 import json
-import time
 
 import httpx
 import pytest
@@ -22,13 +21,9 @@ MESSAGES = build_messages("card not arrived")
 
 
 async def test_samples_run_concurrently() -> None:
-    backend = FakeBackend(delay=0.1)
-    client = LLMClient(backend, max_concurrency=4)
-    start = time.perf_counter()
-    samples = await client.sample_n(MESSAGES, 3)
-    elapsed = time.perf_counter() - start
-    assert backend.peak == 3
-    assert elapsed < 0.25  # three sequential calls would take 0.3 s
+    backend = FakeBackend(delay=0.05)
+    samples = await LLMClient(backend, max_concurrency=4).sample_n(MESSAGES, 3)
+    assert backend.peak == 3  # all three were in flight at once
     assert [s.seed for s in samples] == [0, 1, 2]
 
 
@@ -65,14 +60,32 @@ async def test_gives_up_after_max_retries_and_does_not_cache(clock) -> None:
     assert len(cache) == 0
 
 
-async def test_terminal_error_is_cached_without_retry(clock) -> None:
+async def test_terminal_error_is_not_retried_or_cached(clock) -> None:
     cache = JsonlCache(None)
-    backend = FakeBackend(error=LLMError("HTTP 400: json_validate_failed"))
+    backend = FakeBackend(error=LLMError("HTTP 401: invalid_api_key"))
     client = LLMClient(backend, cache=cache, sleep=clock.sleep)
     result = await client.sample(MESSAGES, seed=0)
-    assert result.error == "HTTP 400: json_validate_failed"
+    assert result.error == "HTTP 401: invalid_api_key"
     assert backend.calls == 1 and clock.sleeps == []
-    assert len(cache) == 1
+    assert len(cache) == 0  # a fixed key must not replay the failure
+
+
+async def test_retries_go_through_the_limiter(clock) -> None:
+    limiter = TokenRateLimiter(10, 100_000, clock=clock, sleep=clock.sleep)
+    backend = FakeBackend(fail_times=1, tokens=(100, 20))
+    client = LLMClient(backend, limiter=limiter, sleep=clock.sleep)
+    result = await client.sample(MESSAGES, seed=0)
+    assert result.error is None
+    assert len(limiter._events) == 2  # the failed attempt still counts as a request
+    assert limiter.used_tokens() == 120  # ...but its reserved tokens are released
+
+
+async def test_cache_write_failure_does_not_lose_the_answer(tmp_path) -> None:
+    cache = JsonlCache(tmp_path / "cache.jsonl")
+    cache.path = tmp_path  # a directory: opening it for append raises an OSError
+    result = await LLMClient(FakeBackend(), cache=cache).sample(MESSAGES, seed=0)
+    assert result.error is None
+    assert cache.persist is False and len(cache) == 1
 
 
 async def test_cache_hit_skips_backend_and_survives_reload(tmp_path) -> None:
@@ -145,6 +158,13 @@ async def test_groq_adapter_client_error_is_terminal() -> None:
     with pytest.raises(LLMError, match="json_validate_failed") as info:
         await backend.complete(REQUEST)
     assert not isinstance(info.value, RetryableError)
+
+
+@pytest.mark.parametrize("body", [b"<html>bad gateway</html>", b'{"choices": []}', b"{}"])
+async def test_groq_adapter_malformed_200_is_an_llm_error(body) -> None:
+    backend = groq_with(lambda r: httpx.Response(200, content=body))
+    with pytest.raises(LLMError, match="malformed response"):
+        await backend.complete(REQUEST)
 
 
 async def test_groq_adapter_network_error_is_retryable() -> None:

@@ -1,5 +1,7 @@
 import json
 
+import pytest
+
 from handoff_gauge.calibration import IsotonicMap, PlattMap
 from handoff_gauge.decider import CalibrationProfile, Decider
 from handoff_gauge.estimators import Estimate
@@ -20,7 +22,7 @@ def test_auto_when_calibrated_confidence_reaches_threshold() -> None:
 
 
 def test_handoff_below_threshold() -> None:
-    d = decider().decide(Estimate("card_arrival", 0.5, 0.5, 0.9), [])
+    d = decider().decide(Estimate("card_arrival", 0.5, 1.0, 0.9), [])
     assert d.decision == "handoff"
     assert "below the threshold" in d.reasons[0]
 
@@ -38,9 +40,28 @@ def test_handoff_without_estimate_or_threshold() -> None:
     assert decider(threshold=None).decide(CONFIDENT, []).decision == "handoff"
 
 
-def test_profile_defaults_when_file_missing(tmp_path) -> None:
-    profile = CalibrationProfile.load(tmp_path / "missing.json")
+def test_missing_profile_file_is_an_error(tmp_path) -> None:
+    with pytest.raises(FileNotFoundError):
+        CalibrationProfile.load(tmp_path / "missing.json")
+
+
+def test_test_default_profile_is_strict() -> None:
+    profile = CalibrationProfile()
     assert profile.estimator == "self_consistency" and profile.threshold == 1.0
+
+
+def test_minority_agreement_hands_off_even_when_confident() -> None:
+    # One valid sample at 0.99 and two failed ones: a verbalized profile must not auto-handle.
+    profile = CalibrationProfile(estimator="verbalized", threshold=0.9)
+    d = Decider(profile).decide(Estimate("card_arrival", 0.99, 1 / 3, 0.99), [])
+    assert d.decision == "handoff"
+    assert "not a majority" in d.reasons[0]
+
+
+def test_case_exactly_on_the_threshold_is_auto() -> None:
+    threshold = PlattMap(80.0, -70.0).apply(0.9)
+    profile = CalibrationProfile(map=PlattMap(80.0, -70.0), threshold=threshold + 1e-12)
+    assert Decider(profile).decide(Estimate("card_arrival", 0.9, 1.0, 0.9), []).decision == "auto"
 
 
 def test_profile_loads_exported_file(tmp_path) -> None:

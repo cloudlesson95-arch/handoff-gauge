@@ -92,3 +92,27 @@ async def test_concurrent_requests_keep_their_own_spans(make_agent) -> None:
     ids_two = {s["span_id"] for s in two.spans}
     assert len(one.spans) == len(two.spans) == 12
     assert not ids_one & ids_two
+
+
+async def test_slow_model_times_out_into_a_handoff(make_agent) -> None:
+    agent = make_agent(FakeBackend(delay=1.0))
+    agent.timeout = 0.05
+    result = await agent.triage("card not arrived")
+    assert result.decision.decision == "handoff"
+    assert "TimeoutError" in result.decision.reasons[0]
+
+
+async def test_failed_samples_cannot_make_a_verbalized_profile_auto(make_agent) -> None:
+    from handoff_gauge.decider import CalibrationProfile
+
+    class TwoFail(FakeBackend):
+        async def complete(self, request):
+            if request.seed < 2:
+                raise LLMError("HTTP 413: request_too_large")
+            return await super().complete(request)
+
+    profile = CalibrationProfile(estimator="verbalized", threshold=0.9)
+    agent = make_agent(TwoFail(answer("card_arrival", 0.99)), profile=profile)
+    result = await agent.triage("card not arrived")
+    assert result.decision.decision == "handoff"
+    assert "not a majority" in result.decision.reasons[0]

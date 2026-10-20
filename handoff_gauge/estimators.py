@@ -4,13 +4,13 @@ Each strategy turns the N sampled answers into one raw score for the majority in
 Decider then maps the raw score through a calibration map fitted for that strategy.
 """
 
-import math
 from abc import ABC, abstractmethod
 from collections.abc import Sequence
 from dataclasses import dataclass
 from typing import Any
 
 from handoff_gauge.answers import Answer, majority_intent
+from handoff_gauge.calibration import sigmoid
 
 
 @dataclass(frozen=True)
@@ -76,7 +76,7 @@ class CombinedLogistic(ConfidenceEstimator):
 
     def score(self, agreement: float, verbalized: float) -> float:
         z = self.bias + self.w_agreement * agreement + self.w_verbalized * verbalized
-        return 1.0 / (1.0 + math.exp(-z))
+        return sigmoid(z)
 
     def params(self) -> dict[str, Any]:
         return {

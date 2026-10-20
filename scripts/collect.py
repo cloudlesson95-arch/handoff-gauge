@@ -8,22 +8,17 @@ Usage: uv run python scripts/collect.py [--samples 3]
 
 import argparse
 import asyncio
-import json
 import logging
 import os
 
 from handoff_gauge import config
-from handoff_gauge.guardrails import parse_answer, redact
+from handoff_gauge.evaluation import load_split
+from handoff_gauge.guardrails import parse_answer, sanitize
 from handoff_gauge.llm import GroqBackend, JsonlCache, LLMClient
 from handoff_gauge.prompt import build_messages
 from handoff_gauge.ratelimit import TokenRateLimiter
 
 SPLITS = ("calibration", "test")
-
-
-def load_split(name: str) -> list[dict]:
-    path = config.DATA_DIR / f"{name}.jsonl"
-    return [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines()]
 
 
 async def main(n_samples: int) -> None:
@@ -47,7 +42,7 @@ async def main(n_samples: int) -> None:
     done = {"messages": 0, "calls": 0, "cache_hits": 0, "failed": 0, "fell_back": 0}
 
     async def one(row: dict) -> None:
-        samples = await client.sample_n(build_messages(redact(row["text"])[0]), n_samples)
+        samples = await client.sample_n(build_messages(sanitize(row["text"])[0]), n_samples)
         failed = sum(s.error is not None for s in samples)
         valid = sum(parse_answer(s) is not None for s in samples)
         done["messages"] += 1

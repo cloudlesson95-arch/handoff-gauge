@@ -120,7 +120,7 @@ digits = st.text("0123456789", min_size=1, max_size=1)
 def card_numbers(draw) -> str:
     n = draw(st.integers(13, 19))
     number = "".join(draw(digits) for _ in range(n))
-    sep = draw(st.sampled_from(["", " ", "-", "."]))
+    sep = draw(st.sampled_from(["", " ", "-", ".", " - "]))
     return sep.join(number[i:i + 4] for i in range(0, n, 4))
 
 
@@ -129,8 +129,9 @@ def phone_numbers(draw) -> str:
     n = draw(st.integers(9, 12))
     number = "".join(draw(digits) for _ in range(n))
     prefix = draw(st.sampled_from(["", "+", "+44 ", "(0", "0"]))
-    sep = draw(st.sampled_from(["", " ", "-"]))
-    body = sep.join(number[i:i + 3] for i in range(0, n, 3))
+    sep = draw(st.sampled_from(["", " ", "-", ".", "/"]))
+    size = draw(st.sampled_from([2, 3, 4]))
+    body = sep.join(number[i:i + size] for i in range(0, n, size))
     return prefix + body if not prefix.startswith("(") else f"(0{body[:2]}) {body[2:]}"
 
 

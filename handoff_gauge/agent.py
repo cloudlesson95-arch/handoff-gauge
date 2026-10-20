@@ -1,6 +1,7 @@
 """TriageAgent: a Facade that runs guardrails, concurrent samples, the confidence estimator
 and the Decider inside one OpenTelemetry trace."""
 
+import asyncio
 import os
 from dataclasses import asdict, dataclass
 from pathlib import Path
@@ -59,8 +60,10 @@ class TriageAgent:
         *,
         n_samples: int = config.N_SAMPLES,
         temperature: float = config.TEMPERATURE,
+        timeout: float = 60.0,
     ) -> None:
         self.client = client
+        self.timeout = timeout
         self.decider = decider
         self.estimator = estimator
         self.n_samples = n_samples
@@ -85,9 +88,12 @@ class TriageAgent:
             try:
                 results += self.input_chain.handle(ctx)
                 if not _tripped(results):
-                    ctx.samples = await self.client.sample_n(
-                        build_messages(ctx.text), self.n_samples, temperature=self.temperature
-                    )
+                    # Retries and rate-limit waits must not keep a request open indefinitely;
+                    # a timeout lands in the handler below and hands the case off.
+                    async with asyncio.timeout(self.timeout):
+                        ctx.samples = await self.client.sample_n(
+                            build_messages(ctx.text), self.n_samples, temperature=self.temperature
+                        )
                     results += self.output_chain.handle(ctx)
                 if not _tripped(results):
                     estimate = self._estimate(ctx)
@@ -146,16 +152,18 @@ def build_agent(
     cache_path: Path | None = config.CACHE_PATH,
     persist_cache: bool = True,
     profile_path: Path = config.CALIBRATION_PATH,
+    profile: CalibrationProfile | None = None,
     n_samples: int = config.N_SAMPLES,
 ) -> TriageAgent:
-    """The production wiring: Groq backend, shared cache, rate limiter, calibrated decider."""
+    """The production wiring: Groq backend, shared cache, rate limiter, calibrated decider.
+    Pass `profile` only in tests; otherwise the exported calibration file must exist."""
     if backend is None:
         config.load_env_file()
         api_key = os.environ.get("GROQ_API_KEY")
         if not api_key:
             raise RuntimeError("GROQ_API_KEY is not set (put it in .env.local)")
         backend = GroqBackend(api_key)
-    profile = CalibrationProfile.load(profile_path)
+    profile = profile or CalibrationProfile.load(profile_path)
     client = LLMClient(
         backend,
         cache=JsonlCache(cache_path, persist=persist_cache),

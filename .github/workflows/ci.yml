@@ -20,7 +20,7 @@ jobs:
       - run: uv sync --locked
       - run: uv run ruff check .
       - name: Tests with branch coverage gate (fail-under in pyproject.toml)
-        run: uv run pytest -q --cov --cov-branch --cov-report=term-missing
+        run: uv run pytest -q -m "not slow" --cov --cov-branch --cov-report=term-missing
       - name: Calibration regression gate (replays cached LLM responses, no API key)
         run: uv run pytest -q -m slow -rA
 

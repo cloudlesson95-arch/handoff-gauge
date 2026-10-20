@@ -12,6 +12,8 @@ from handoff_gauge.calibration import CalibrationMap, IdentityMap, map_from_dict
 from handoff_gauge.estimators import ConfidenceEstimator, Estimate, build_estimator
 from handoff_gauge.guardrails import GuardrailResult
 
+THRESHOLD_TOLERANCE = 1e-9
+
 
 @dataclass(frozen=True)
 class Decision:
@@ -35,8 +37,10 @@ class CalibrationProfile:
 
     @classmethod
     def load(cls, path: Path = config.CALIBRATION_PATH) -> "CalibrationProfile":
+        """Load an exported profile. A missing file is an error: the uncalibrated defaults
+        are for tests, never a silent fallback in production."""
         if not path.exists():
-            return cls()
+            raise FileNotFoundError(f"{path} is missing; run scripts/calibrate.py")
         data = json.loads(path.read_text(encoding="utf-8"))
         return cls(
             estimator=data["estimator"],
@@ -67,16 +71,23 @@ class Decider:
             return handoff(*(f"Guardrail {t.name}: {t.reason}" for t in trips))
         if estimate is None or intent is None:
             return handoff("No usable answer from the model.")
+        if estimate.agreement <= 0.5:
+            # Failed or invalid samples count against the majority, whatever the strategy.
+            return handoff(
+                f"Only {estimate.agreement:.0%} of the samples agree on one intent, not a majority."
+            )
         if threshold is None:
             return handoff(
                 "No threshold reaches the target precision, so every case goes to a human."
             )
-        if calibrated >= threshold:
+        # The threshold is itself a fitted score; the tolerance keeps a case that sits exactly
+        # on it from flipping on the last floating-point digit across platforms.
+        if calibrated >= threshold - THRESHOLD_TOLERANCE:
             reason = (
-                f"Calibrated confidence {calibrated:.2f} is at or above "
-                f"the threshold {threshold:.2f}."
+                f"Calibrated confidence {calibrated:.3f} is at or above "
+                f"the threshold {threshold:.3f}."
             )
             return Decision("auto", intent, calibrated, raw, threshold, [reason])
         return handoff(
-            f"Calibrated confidence {calibrated:.2f} is below the threshold {threshold:.2f}."
+            f"Calibrated confidence {calibrated:.3f} is below the threshold {threshold:.3f}."
         )
