@@ -6,8 +6,8 @@
     "result": {
       "decision": "auto",
       "intent": "card_arrival",
-      "calibrated_confidence": 0.92,
-      "raw_score": 0.9017,
+      "calibrated_confidence": 0.9195,
+      "raw_score": 0.9016,
       "threshold": 0.9145031937876782,
       "reasons": [
         "Calibrated confidence 0.920 is at or above the threshold 0.915."
@@ -56,29 +56,29 @@
         {
           "seed": 0,
           "content": "{\"intent\":\"card_arrival\",\"confidence\":0.97}",
-          "cache_hit": true,
+          "cache_hit": false,
           "error": null
         },
         {
           "seed": 1,
-          "content": "{\"intent\":\"card_arrival\",\"confidence\":0.97}",
-          "cache_hit": true,
+          "content": "{\"intent\":\"card_arrival\",\"confidence\":0.98}",
+          "cache_hit": false,
           "error": null
         },
         {
           "seed": 2,
-          "content": "{\"intent\":\"card_arrival\",\"confidence\":0.99}",
-          "cache_hit": true,
+          "content": "{\"intent\":\"card_arrival\",\"confidence\":0.97}",
+          "cache_hit": false,
           "error": null
         }
       ],
       "spans": [
         {
           "name": "invoke_agent handoff-gauge",
-          "span_id": "d2f85ce1aed1d553",
+          "span_id": "0b42ac951ae4474c",
           "parent_id": null,
           "start_ms": 0.0,
-          "duration_ms": 0.954,
+          "duration_ms": 614.163,
           "status": "UNSET",
           "attributes": {
             "gen_ai.operation.name": "invoke_agent",
@@ -90,8 +90,8 @@
         },
         {
           "name": "guardrail pii_redaction",
-          "span_id": "ddb4e03e7d60783b",
-          "parent_id": "d2f85ce1aed1d553",
+          "span_id": "248430e6245a5f0a",
+          "parent_id": "0b42ac951ae4474c",
           "start_ms": 0.0,
           "duration_ms": 0.0,
           "status": "UNSET",
@@ -103,8 +103,8 @@
         },
         {
           "name": "guardrail empty_message",
-          "span_id": "6bc835d49bb87a73",
-          "parent_id": "d2f85ce1aed1d553",
+          "span_id": "f3f31f797834bb38",
+          "parent_id": "0b42ac951ae4474c",
           "start_ms": 0.0,
           "duration_ms": 0.0,
           "status": "UNSET",
@@ -116,8 +116,8 @@
         },
         {
           "name": "guardrail prompt_injection",
-          "span_id": "10b2e7f6c845c859",
-          "parent_id": "d2f85ce1aed1d553",
+          "span_id": "1898fcfd15472814",
+          "parent_id": "0b42ac951ae4474c",
           "start_ms": 0.0,
           "duration_ms": 0.0,
           "status": "UNSET",
@@ -129,8 +129,8 @@
         },
         {
           "name": "guardrail off_topic",
-          "span_id": "f780fb926be817bb",
-          "parent_id": "d2f85ce1aed1d553",
+          "span_id": "b51784015bd7c7d9",
+          "parent_id": "0b42ac951ae4474c",
           "start_ms": 0.0,
           "duration_ms": 0.0,
           "status": "UNSET",
@@ -142,10 +142,10 @@
         },
         {
           "name": "chat openai/gpt-oss-20b",
-          "span_id": "0119ef54c91038fc",
-          "parent_id": "d2f85ce1aed1d553",
-          "start_ms": 0.738,
-          "duration_ms": 0.155,
+          "span_id": "3a9e53ca26ee0f36",
+          "parent_id": "0b42ac951ae4474c",
+          "start_ms": 0.0,
+          "duration_ms": 360.157,
           "status": "UNSET",
           "attributes": {
             "gen_ai.operation.name": "chat",
@@ -157,15 +157,15 @@
             "gen_ai.response.model": "openai/gpt-oss-20b",
             "gen_ai.usage.input_tokens": 314,
             "gen_ai.usage.output_tokens": 28,
-            "handoff.cache_hit": true
+            "handoff.cache_hit": false
           }
         },
         {
           "name": "chat openai/gpt-oss-20b",
-          "span_id": "0449f2330c8d5069",
-          "parent_id": "d2f85ce1aed1d553",
-          "start_ms": 0.954,
-          "duration_ms": 0.0,
+          "span_id": "373a2fcd1cdd4ec6",
+          "parent_id": "0b42ac951ae4474c",
+          "start_ms": 34.325,
+          "duration_ms": 568.698,
           "status": "UNSET",
           "attributes": {
             "gen_ai.operation.name": "chat",
@@ -176,16 +176,16 @@
             "gen_ai.request.max_tokens": 400,
             "gen_ai.response.model": "openai/gpt-oss-20b",
             "gen_ai.usage.input_tokens": 314,
-            "gen_ai.usage.output_tokens": 29,
-            "handoff.cache_hit": true
+            "gen_ai.usage.output_tokens": 32,
+            "handoff.cache_hit": false
           }
         },
         {
           "name": "chat openai/gpt-oss-20b",
-          "span_id": "8b001215445e3b33",
-          "parent_id": "d2f85ce1aed1d553",
-          "start_ms": 0.954,
-          "duration_ms": 0.0,
+          "span_id": "580b1549323248f5",
+          "parent_id": "0b42ac951ae4474c",
+          "start_ms": 34.325,
+          "duration_ms": 579.838,
           "status": "UNSET",
           "attributes": {
             "gen_ai.operation.name": "chat",
@@ -197,14 +197,14 @@
             "gen_ai.response.model": "openai/gpt-oss-20b",
             "gen_ai.usage.input_tokens": 314,
             "gen_ai.usage.output_tokens": 29,
-            "handoff.cache_hit": true
+            "handoff.cache_hit": false
           }
         },
         {
           "name": "guardrail output_schema",
-          "span_id": "e46e8a1da64e13fc",
-          "parent_id": "d2f85ce1aed1d553",
-          "start_ms": 0.954,
+          "span_id": "a7a6cafe9eb0147a",
+          "parent_id": "0b42ac951ae4474c",
+          "start_ms": 614.163,
           "duration_ms": 0.0,
           "status": "UNSET",
           "attributes": {
@@ -215,9 +215,9 @@
         },
         {
           "name": "guardrail allowed_label",
-          "span_id": "929bc288e73e9bab",
-          "parent_id": "d2f85ce1aed1d553",
-          "start_ms": 0.954,
+          "span_id": "268d69b7317f4883",
+          "parent_id": "0b42ac951ae4474c",
+          "start_ms": 614.163,
           "duration_ms": 0.0,
           "status": "UNSET",
           "attributes": {
@@ -228,29 +228,29 @@
         },
         {
           "name": "estimate combined",
-          "span_id": "9ab27305db0aaf23",
-          "parent_id": "d2f85ce1aed1d553",
-          "start_ms": 0.954,
+          "span_id": "01ae346d26bdac73",
+          "parent_id": "0b42ac951ae4474c",
+          "start_ms": 614.163,
           "duration_ms": 0.0,
           "status": "UNSET",
           "attributes": {
             "handoff.estimator": "combined",
-            "handoff.raw_score": 0.9016984317250714,
+            "handoff.raw_score": 0.9016237864819376,
             "handoff.agreement": 1.0,
-            "handoff.verbalized": 0.9766666666666666
+            "handoff.verbalized": 0.9733333333333333
           }
         },
         {
           "name": "decision",
-          "span_id": "edb8135c1585c259",
-          "parent_id": "d2f85ce1aed1d553",
-          "start_ms": 0.954,
+          "span_id": "a09cba1b993c572f",
+          "parent_id": "0b42ac951ae4474c",
+          "start_ms": 614.163,
           "duration_ms": 0.0,
           "status": "UNSET",
           "attributes": {
             "handoff.decision": "auto",
             "handoff.intent": "card_arrival",
-            "handoff.calibrated_confidence": 0.9199698838153392,
+            "handoff.calibrated_confidence": 0.9195284447292676,
             "handoff.threshold": 0.9145031937876782
           }
         }
@@ -314,29 +314,29 @@
         {
           "seed": 0,
           "content": "{\"intent\":\"transaction_charged_twice\",\"confidence\":0.99}",
-          "cache_hit": true,
+          "cache_hit": false,
           "error": null
         },
         {
           "seed": 1,
           "content": "{\"intent\":\"transaction_charged_twice\",\"confidence\":0.98}",
-          "cache_hit": true,
+          "cache_hit": false,
           "error": null
         },
         {
           "seed": 2,
           "content": "{\"intent\":\"transaction_charged_twice\",\"confidence\":0.99}",
-          "cache_hit": true,
+          "cache_hit": false,
           "error": null
         }
       ],
       "spans": [
         {
           "name": "invoke_agent handoff-gauge",
-          "span_id": "632676b5d1dd8db0",
+          "span_id": "2028b8621261a62b",
           "parent_id": null,
           "start_ms": 0.0,
-          "duration_ms": 0.0,
+          "duration_ms": 621.065,
           "status": "UNSET",
           "attributes": {
             "gen_ai.operation.name": "invoke_agent",
@@ -348,8 +348,8 @@
         },
         {
           "name": "guardrail pii_redaction",
-          "span_id": "854b9625709c0c2a",
-          "parent_id": "632676b5d1dd8db0",
+          "span_id": "c2f945d8eab3518f",
+          "parent_id": "2028b8621261a62b",
           "start_ms": 0.0,
           "duration_ms": 0.0,
           "status": "UNSET",
@@ -361,8 +361,8 @@
         },
         {
           "name": "guardrail empty_message",
-          "span_id": "3f9eccb9f9ba0735",
-          "parent_id": "632676b5d1dd8db0",
+          "span_id": "72b04831bdea7b29",
+          "parent_id": "2028b8621261a62b",
           "start_ms": 0.0,
           "duration_ms": 0.0,
           "status": "UNSET",
@@ -374,8 +374,8 @@
         },
         {
           "name": "guardrail prompt_injection",
-          "span_id": "37f47de920df6a16",
-          "parent_id": "632676b5d1dd8db0",
+          "span_id": "703505fb9a623ba6",
+          "parent_id": "2028b8621261a62b",
           "start_ms": 0.0,
           "duration_ms": 0.0,
           "status": "UNSET",
@@ -387,8 +387,8 @@
         },
         {
           "name": "guardrail off_topic",
-          "span_id": "58b337e7e23fc6c9",
-          "parent_id": "632676b5d1dd8db0",
+          "span_id": "5957de7a8231fb2f",
+          "parent_id": "2028b8621261a62b",
           "start_ms": 0.0,
           "duration_ms": 0.0,
           "status": "UNSET",
@@ -400,10 +400,10 @@
         },
         {
           "name": "chat openai/gpt-oss-20b",
-          "span_id": "7b3cf1e2a399296e",
-          "parent_id": "632676b5d1dd8db0",
+          "span_id": "fafe31d53c7155c2",
+          "parent_id": "2028b8621261a62b",
           "start_ms": 0.0,
-          "duration_ms": 0.0,
+          "duration_ms": 615.568,
           "status": "UNSET",
           "attributes": {
             "gen_ai.operation.name": "chat",
@@ -415,15 +415,15 @@
             "gen_ai.response.model": "openai/gpt-oss-20b",
             "gen_ai.usage.input_tokens": 313,
             "gen_ai.usage.output_tokens": 37,
-            "handoff.cache_hit": true
+            "handoff.cache_hit": false
           }
         },
         {
           "name": "chat openai/gpt-oss-20b",
-          "span_id": "c9057aa907e1a2c3",
-          "parent_id": "632676b5d1dd8db0",
-          "start_ms": 0.0,
-          "duration_ms": 0.0,
+          "span_id": "a581ce0ee77a02df",
+          "parent_id": "2028b8621261a62b",
+          "start_ms": 2.406,
+          "duration_ms": 423.075,
           "status": "UNSET",
           "attributes": {
             "gen_ai.operation.name": "chat",
@@ -435,15 +435,15 @@
             "gen_ai.response.model": "openai/gpt-oss-20b",
             "gen_ai.usage.input_tokens": 313,
             "gen_ai.usage.output_tokens": 35,
-            "handoff.cache_hit": true
+            "handoff.cache_hit": false
           }
         },
         {
           "name": "chat openai/gpt-oss-20b",
-          "span_id": "d0228d49dccf27cb",
-          "parent_id": "632676b5d1dd8db0",
-          "start_ms": 0.0,
-          "duration_ms": 0.0,
+          "span_id": "9591a152020ad0e2",
+          "parent_id": "2028b8621261a62b",
+          "start_ms": 4.471,
+          "duration_ms": 422.062,
           "status": "UNSET",
           "attributes": {
             "gen_ai.operation.name": "chat",
@@ -455,15 +455,15 @@
             "gen_ai.response.model": "openai/gpt-oss-20b",
             "gen_ai.usage.input_tokens": 313,
             "gen_ai.usage.output_tokens": 38,
-            "handoff.cache_hit": true
+            "handoff.cache_hit": false
           }
         },
         {
           "name": "guardrail output_schema",
-          "span_id": "a5717b0a68b6e673",
-          "parent_id": "632676b5d1dd8db0",
-          "start_ms": 0.0,
-          "duration_ms": 0.0,
+          "span_id": "5c60cdf409fdcff9",
+          "parent_id": "2028b8621261a62b",
+          "start_ms": 619.878,
+          "duration_ms": 0.08,
           "status": "UNSET",
           "attributes": {
             "guardrail.name": "output_schema",
@@ -473,9 +473,9 @@
         },
         {
           "name": "guardrail allowed_label",
-          "span_id": "350a3d1c3898be13",
-          "parent_id": "632676b5d1dd8db0",
-          "start_ms": 0.0,
+          "span_id": "f2610976f893eb7a",
+          "parent_id": "2028b8621261a62b",
+          "start_ms": 619.957,
           "duration_ms": 0.0,
           "status": "UNSET",
           "attributes": {
@@ -486,9 +486,9 @@
         },
         {
           "name": "estimate combined",
-          "span_id": "72fca47928cdb447",
-          "parent_id": "632676b5d1dd8db0",
-          "start_ms": 0.0,
+          "span_id": "5eb43438e7545604",
+          "parent_id": "2028b8621261a62b",
+          "start_ms": 619.957,
           "duration_ms": 0.0,
           "status": "UNSET",
           "attributes": {
@@ -500,9 +500,9 @@
         },
         {
           "name": "decision",
-          "span_id": "470010222b249318",
-          "parent_id": "632676b5d1dd8db0",
-          "start_ms": 0.0,
+          "span_id": "c519894428d27bae",
+          "parent_id": "2028b8621261a62b",
+          "start_ms": 621.065,
           "duration_ms": 0.0,
           "status": "UNSET",
           "attributes": {
@@ -522,11 +522,11 @@
     "result": {
       "decision": "auto",
       "intent": "card_arrival",
-      "calibrated_confidence": 0.9182,
-      "raw_score": 0.9014,
+      "calibrated_confidence": 0.9159,
+      "raw_score": 0.901,
       "threshold": 0.9145031937876782,
       "reasons": [
-        "Calibrated confidence 0.918 is at or above the threshold 0.915."
+        "Calibrated confidence 0.916 is at or above the threshold 0.915."
       ],
       "notes": [],
       "redacted_text": "When will the card I ordered get here, has it even been sent?",
@@ -571,30 +571,30 @@
       "samples": [
         {
           "seed": 0,
-          "content": "{\"intent\":\"card_arrival\",\"confidence\":0.99}",
-          "cache_hit": true,
+          "content": "{\"intent\":\"card_arrival\",\"confidence\":0.96}",
+          "cache_hit": false,
           "error": null
         },
         {
           "seed": 1,
-          "content": "{\"intent\":\"card_arrival\",\"confidence\":0.95}",
-          "cache_hit": true,
+          "content": "{\"intent\":\"card_arrival\",\"confidence\":0.93}",
+          "cache_hit": false,
           "error": null
         },
         {
           "seed": 2,
           "content": "{\"intent\":\"card_arrival\",\"confidence\":0.95}",
-          "cache_hit": true,
+          "cache_hit": false,
           "error": null
         }
       ],
       "spans": [
         {
           "name": "invoke_agent handoff-gauge",
-          "span_id": "0f8ddc73d34fe473",
+          "span_id": "6c625849b40294c6",
           "parent_id": null,
           "start_ms": 0.0,
-          "duration_ms": 0.0,
+          "duration_ms": 316.201,
           "status": "UNSET",
           "attributes": {
             "gen_ai.operation.name": "invoke_agent",
@@ -606,8 +606,8 @@
         },
         {
           "name": "guardrail pii_redaction",
-          "span_id": "60b81b597d26eef2",
-          "parent_id": "0f8ddc73d34fe473",
+          "span_id": "7b0c01f04708f6a4",
+          "parent_id": "6c625849b40294c6",
           "start_ms": 0.0,
           "duration_ms": 0.0,
           "status": "UNSET",
@@ -619,8 +619,8 @@
         },
         {
           "name": "guardrail empty_message",
-          "span_id": "06026e7a39db29f3",
-          "parent_id": "0f8ddc73d34fe473",
+          "span_id": "176aee42a956930c",
+          "parent_id": "6c625849b40294c6",
           "start_ms": 0.0,
           "duration_ms": 0.0,
           "status": "UNSET",
@@ -632,8 +632,8 @@
         },
         {
           "name": "guardrail prompt_injection",
-          "span_id": "4caa60f38373b79b",
-          "parent_id": "0f8ddc73d34fe473",
+          "span_id": "e564f3efe3b04bcc",
+          "parent_id": "6c625849b40294c6",
           "start_ms": 0.0,
           "duration_ms": 0.0,
           "status": "UNSET",
@@ -645,9 +645,9 @@
         },
         {
           "name": "guardrail off_topic",
-          "span_id": "4171ea73713426d4",
-          "parent_id": "0f8ddc73d34fe473",
-          "start_ms": 0.0,
+          "span_id": "7e03128279d73743",
+          "parent_id": "6c625849b40294c6",
+          "start_ms": 0.99,
           "duration_ms": 0.0,
           "status": "UNSET",
           "attributes": {
@@ -658,10 +658,10 @@
         },
         {
           "name": "chat openai/gpt-oss-20b",
-          "span_id": "2b72e4e0a0a62a45",
-          "parent_id": "0f8ddc73d34fe473",
-          "start_ms": 0.0,
-          "duration_ms": 0.0,
+          "span_id": "a5f1c6bee52cb90e",
+          "parent_id": "6c625849b40294c6",
+          "start_ms": 1.515,
+          "duration_ms": 116.122,
           "status": "UNSET",
           "attributes": {
             "gen_ai.operation.name": "chat",
@@ -672,16 +672,16 @@
             "gen_ai.request.max_tokens": 400,
             "gen_ai.response.model": "openai/gpt-oss-20b",
             "gen_ai.usage.input_tokens": 317,
-            "gen_ai.usage.output_tokens": 34,
-            "handoff.cache_hit": true
+            "gen_ai.usage.output_tokens": 30,
+            "handoff.cache_hit": false
           }
         },
         {
           "name": "chat openai/gpt-oss-20b",
-          "span_id": "7721c2de0055db33",
-          "parent_id": "0f8ddc73d34fe473",
-          "start_ms": 0.0,
-          "duration_ms": 0.0,
+          "span_id": "2b7ac26871f313c5",
+          "parent_id": "6c625849b40294c6",
+          "start_ms": 4.533,
+          "duration_ms": 311.669,
           "status": "UNSET",
           "attributes": {
             "gen_ai.operation.name": "chat",
@@ -692,16 +692,16 @@
             "gen_ai.request.max_tokens": 400,
             "gen_ai.response.model": "openai/gpt-oss-20b",
             "gen_ai.usage.input_tokens": 317,
-            "gen_ai.usage.output_tokens": 39,
-            "handoff.cache_hit": true
+            "gen_ai.usage.output_tokens": 32,
+            "handoff.cache_hit": false
           }
         },
         {
           "name": "chat openai/gpt-oss-20b",
-          "span_id": "f3cb16c9bf2d3453",
-          "parent_id": "0f8ddc73d34fe473",
-          "start_ms": 0.0,
-          "duration_ms": 0.0,
+          "span_id": "918befc757554add",
+          "parent_id": "6c625849b40294c6",
+          "start_ms": 7.661,
+          "duration_ms": 298.184,
           "status": "UNSET",
           "attributes": {
             "gen_ai.operation.name": "chat",
@@ -712,15 +712,15 @@
             "gen_ai.request.max_tokens": 400,
             "gen_ai.response.model": "openai/gpt-oss-20b",
             "gen_ai.usage.input_tokens": 317,
-            "gen_ai.usage.output_tokens": 34,
-            "handoff.cache_hit": true
+            "gen_ai.usage.output_tokens": 33,
+            "handoff.cache_hit": false
           }
         },
         {
           "name": "guardrail output_schema",
-          "span_id": "9939e0c9b292bdd7",
-          "parent_id": "0f8ddc73d34fe473",
-          "start_ms": 0.0,
+          "span_id": "c6c59f159af4900c",
+          "parent_id": "6c625849b40294c6",
+          "start_ms": 316.201,
           "duration_ms": 0.0,
           "status": "UNSET",
           "attributes": {
@@ -731,9 +731,9 @@
         },
         {
           "name": "guardrail allowed_label",
-          "span_id": "6f3f58c25996dffd",
-          "parent_id": "0f8ddc73d34fe473",
-          "start_ms": 0.0,
+          "span_id": "0cfd5fe131d7df90",
+          "parent_id": "6c625849b40294c6",
+          "start_ms": 316.201,
           "duration_ms": 0.0,
           "status": "UNSET",
           "attributes": {
@@ -744,29 +744,29 @@
         },
         {
           "name": "estimate combined",
-          "span_id": "d39cf97b67c2c643",
-          "parent_id": "0f8ddc73d34fe473",
-          "start_ms": 0.0,
+          "span_id": "b85358ed1ee3832e",
+          "parent_id": "6c625849b40294c6",
+          "start_ms": 316.201,
           "duration_ms": 0.0,
           "status": "UNSET",
           "attributes": {
             "handoff.estimator": "combined",
-            "handoff.raw_score": 0.9013995476950074,
+            "handoff.raw_score": 0.9010248047066669,
             "handoff.agreement": 1.0,
-            "handoff.verbalized": 0.9633333333333333
+            "handoff.verbalized": 0.9466666666666667
           }
         },
         {
           "name": "decision",
-          "span_id": "b6b41d87f7f8cf3f",
-          "parent_id": "0f8ddc73d34fe473",
-          "start_ms": 0.0,
+          "span_id": "f32756a777b1f9b2",
+          "parent_id": "6c625849b40294c6",
+          "start_ms": 316.201,
           "duration_ms": 0.0,
           "status": "UNSET",
           "attributes": {
             "handoff.decision": "auto",
             "handoff.intent": "card_arrival",
-            "handoff.calibrated_confidence": 0.9181889436218684,
+            "handoff.calibrated_confidence": 0.9159050134669651,
             "handoff.threshold": 0.9145031937876782
           }
         }
@@ -775,19 +775,19 @@
   },
   {
     "id": "ex-4",
-    "title": "Unknown payment",
-    "text": "There's a payment I don't remember making, has my card been hacked?",
+    "title": "Transfer not there",
+    "text": "I sent money yesterday and it is still not there, what is going on?",
     "result": {
       "decision": "handoff",
-      "intent": "card_payment_not_recognised",
-      "calibrated_confidence": 0.9121,
-      "raw_score": 0.9004,
+      "intent": "transfer_not_received_by_recipient",
+      "calibrated_confidence": 0.6507,
+      "raw_score": 0.879,
       "threshold": 0.9145031937876782,
       "reasons": [
-        "Calibrated confidence 0.912 is below the threshold 0.915."
+        "Calibrated confidence 0.651 is below the threshold 0.915."
       ],
       "notes": [],
-      "redacted_text": "There's a payment I don't remember making, has my card been hacked?",
+      "redacted_text": "I sent money yesterday and it is still not there, what is going on?",
       "guardrails": [
         {
           "name": "pii_redaction",
@@ -829,30 +829,30 @@
       "samples": [
         {
           "seed": 0,
-          "content": "{\"intent\":\"card_payment_not_recognised\",\"confidence\":0.99}",
-          "cache_hit": true,
+          "content": "{\"intent\":\"transfer_not_received_by_recipient\",\"confidence\":0.99}",
+          "cache_hit": false,
           "error": null
         },
         {
           "seed": 1,
-          "content": "{\"intent\":\"card_payment_not_recognised\",\"confidence\":0.85}",
-          "cache_hit": true,
+          "content": "{\"intent\":\"pending_transfer\",\"confidence\":0.92}",
+          "cache_hit": false,
           "error": null
         },
         {
           "seed": 2,
-          "content": "{\"intent\":\"card_payment_not_recognised\",\"confidence\":0.92}",
-          "cache_hit": true,
+          "content": "{\"intent\":\"transfer_not_received_by_recipient\",\"confidence\":0.99}",
+          "cache_hit": false,
           "error": null
         }
       ],
       "spans": [
         {
           "name": "invoke_agent handoff-gauge",
-          "span_id": "d62ee2f9bbc110d4",
+          "span_id": "14d9976ca793b3e6",
           "parent_id": null,
           "start_ms": 0.0,
-          "duration_ms": 0.0,
+          "duration_ms": 439.039,
           "status": "UNSET",
           "attributes": {
             "gen_ai.operation.name": "invoke_agent",
@@ -864,8 +864,8 @@
         },
         {
           "name": "guardrail pii_redaction",
-          "span_id": "901b3fd3aecab186",
-          "parent_id": "d62ee2f9bbc110d4",
+          "span_id": "b45887863870dcca",
+          "parent_id": "14d9976ca793b3e6",
           "start_ms": 0.0,
           "duration_ms": 0.0,
           "status": "UNSET",
@@ -877,8 +877,8 @@
         },
         {
           "name": "guardrail empty_message",
-          "span_id": "9f24a44dd019c1d9",
-          "parent_id": "d62ee2f9bbc110d4",
+          "span_id": "c8ba974d1cb270ce",
+          "parent_id": "14d9976ca793b3e6",
           "start_ms": 0.0,
           "duration_ms": 0.0,
           "status": "UNSET",
@@ -890,8 +890,8 @@
         },
         {
           "name": "guardrail prompt_injection",
-          "span_id": "f3eefe247dd2240c",
-          "parent_id": "d62ee2f9bbc110d4",
+          "span_id": "65ccc885c54fe310",
+          "parent_id": "14d9976ca793b3e6",
           "start_ms": 0.0,
           "duration_ms": 0.0,
           "status": "UNSET",
@@ -903,8 +903,8 @@
         },
         {
           "name": "guardrail off_topic",
-          "span_id": "a55f64373b8a6f24",
-          "parent_id": "d62ee2f9bbc110d4",
+          "span_id": "0993334fa52e7e93",
+          "parent_id": "14d9976ca793b3e6",
           "start_ms": 0.0,
           "duration_ms": 0.0,
           "status": "UNSET",
@@ -916,10 +916,10 @@
         },
         {
           "name": "chat openai/gpt-oss-20b",
-          "span_id": "7923e42c371c7a20",
-          "parent_id": "d62ee2f9bbc110d4",
+          "span_id": "8a4671e27a1f468f",
+          "parent_id": "14d9976ca793b3e6",
           "start_ms": 0.0,
-          "duration_ms": 0.0,
+          "duration_ms": 406.076,
           "status": "UNSET",
           "attributes": {
             "gen_ai.operation.name": "chat",
@@ -929,17 +929,17 @@
             "gen_ai.request.seed": 0,
             "gen_ai.request.max_tokens": 400,
             "gen_ai.response.model": "openai/gpt-oss-20b",
-            "gen_ai.usage.input_tokens": 316,
+            "gen_ai.usage.input_tokens": 318,
             "gen_ai.usage.output_tokens": 35,
-            "handoff.cache_hit": true
+            "handoff.cache_hit": false
           }
         },
         {
           "name": "chat openai/gpt-oss-20b",
-          "span_id": "13e5580f2061fae5",
-          "parent_id": "d62ee2f9bbc110d4",
-          "start_ms": 0.0,
-          "duration_ms": 0.0,
+          "span_id": "26a2b2f0525c71b4",
+          "parent_id": "14d9976ca793b3e6",
+          "start_ms": 3.471,
+          "duration_ms": 169.201,
           "status": "UNSET",
           "attributes": {
             "gen_ai.operation.name": "chat",
@@ -949,17 +949,17 @@
             "gen_ai.request.seed": 1,
             "gen_ai.request.max_tokens": 400,
             "gen_ai.response.model": "openai/gpt-oss-20b",
-            "gen_ai.usage.input_tokens": 316,
-            "gen_ai.usage.output_tokens": 56,
-            "handoff.cache_hit": true
+            "gen_ai.usage.input_tokens": 318,
+            "gen_ai.usage.output_tokens": 45,
+            "handoff.cache_hit": false
           }
         },
         {
           "name": "chat openai/gpt-oss-20b",
-          "span_id": "b6c24109238b8523",
-          "parent_id": "d62ee2f9bbc110d4",
-          "start_ms": 0.0,
-          "duration_ms": 0.0,
+          "span_id": "7a16989b553b4e8d",
+          "parent_id": "14d9976ca793b3e6",
+          "start_ms": 4.607,
+          "duration_ms": 426.898,
           "status": "UNSET",
           "attributes": {
             "gen_ai.operation.name": "chat",
@@ -969,16 +969,16 @@
             "gen_ai.request.seed": 2,
             "gen_ai.request.max_tokens": 400,
             "gen_ai.response.model": "openai/gpt-oss-20b",
-            "gen_ai.usage.input_tokens": 316,
+            "gen_ai.usage.input_tokens": 318,
             "gen_ai.usage.output_tokens": 38,
-            "handoff.cache_hit": true
+            "handoff.cache_hit": false
           }
         },
         {
           "name": "guardrail output_schema",
-          "span_id": "10da4fb0f26e05c9",
-          "parent_id": "d62ee2f9bbc110d4",
-          "start_ms": 0.0,
+          "span_id": "6ff27743c68989b0",
+          "parent_id": "14d9976ca793b3e6",
+          "start_ms": 438.79,
           "duration_ms": 0.0,
           "status": "UNSET",
           "attributes": {
@@ -989,9 +989,9 @@
         },
         {
           "name": "guardrail allowed_label",
-          "span_id": "7e1620b8ab780e46",
-          "parent_id": "d62ee2f9bbc110d4",
-          "start_ms": 0.0,
+          "span_id": "938f01750d3c0dfa",
+          "parent_id": "14d9976ca793b3e6",
+          "start_ms": 438.79,
           "duration_ms": 0.0,
           "status": "UNSET",
           "attributes": {
@@ -1002,29 +1002,29 @@
         },
         {
           "name": "estimate combined",
-          "span_id": "c48333aa20be3930",
-          "parent_id": "d62ee2f9bbc110d4",
-          "start_ms": 0.0,
+          "span_id": "07ca130b1e8162d1",
+          "parent_id": "14d9976ca793b3e6",
+          "start_ms": 439.039,
           "duration_ms": 0.0,
           "status": "UNSET",
           "attributes": {
             "handoff.estimator": "combined",
-            "handoff.raw_score": 0.9004225787044363,
-            "handoff.agreement": 1.0,
-            "handoff.verbalized": 0.9199999999999999
+            "handoff.raw_score": 0.8789869467205865,
+            "handoff.agreement": 0.6666666666666666,
+            "handoff.verbalized": 0.99
           }
         },
         {
           "name": "decision",
-          "span_id": "339e8e593e564fc8",
-          "parent_id": "d62ee2f9bbc110d4",
-          "start_ms": 0.0,
+          "span_id": "6d6c5fb1e272df16",
+          "parent_id": "14d9976ca793b3e6",
+          "start_ms": 439.039,
           "duration_ms": 0.0,
           "status": "UNSET",
           "attributes": {
             "handoff.decision": "handoff",
-            "handoff.intent": "card_payment_not_recognised",
-            "handoff.calibrated_confidence": 0.9121131837567871,
+            "handoff.intent": "transfer_not_received_by_recipient",
+            "handoff.calibrated_confidence": 0.6507307605523769,
             "handoff.threshold": 0.9145031937876782
           }
         }
@@ -1090,29 +1090,29 @@
         {
           "seed": 0,
           "content": "{\"intent\":\"transaction_charged_twice\",\"confidence\":0.99}",
-          "cache_hit": true,
+          "cache_hit": false,
           "error": null
         },
         {
           "seed": 1,
           "content": "{\"intent\":\"transaction_charged_twice\",\"confidence\":0.99}",
-          "cache_hit": true,
+          "cache_hit": false,
           "error": null
         },
         {
           "seed": 2,
           "content": "{\"intent\":\"transaction_charged_twice\",\"confidence\":0.99}",
-          "cache_hit": true,
+          "cache_hit": false,
           "error": null
         }
       ],
       "spans": [
         {
           "name": "invoke_agent handoff-gauge",
-          "span_id": "7f4fb620cc5dcfdc",
+          "span_id": "39b05f0347ffc666",
           "parent_id": null,
           "start_ms": 0.0,
-          "duration_ms": 0.0,
+          "duration_ms": 10014.489,
           "status": "UNSET",
           "attributes": {
             "gen_ai.operation.name": "invoke_agent",
@@ -1124,8 +1124,8 @@
         },
         {
           "name": "guardrail pii_redaction",
-          "span_id": "bef3233956993855",
-          "parent_id": "7f4fb620cc5dcfdc",
+          "span_id": "a087f29c5727ff91",
+          "parent_id": "39b05f0347ffc666",
           "start_ms": 0.0,
           "duration_ms": 0.0,
           "status": "UNSET",
@@ -1137,8 +1137,8 @@
         },
         {
           "name": "guardrail empty_message",
-          "span_id": "3631ef876b818fbd",
-          "parent_id": "7f4fb620cc5dcfdc",
+          "span_id": "cd18c2c86c32fbf5",
+          "parent_id": "39b05f0347ffc666",
           "start_ms": 0.0,
           "duration_ms": 0.0,
           "status": "UNSET",
@@ -1150,8 +1150,8 @@
         },
         {
           "name": "guardrail prompt_injection",
-          "span_id": "a0ebc46c2df29f97",
-          "parent_id": "7f4fb620cc5dcfdc",
+          "span_id": "1b88f8cc2f0e8bc7",
+          "parent_id": "39b05f0347ffc666",
           "start_ms": 0.0,
           "duration_ms": 0.0,
           "status": "UNSET",
@@ -1163,8 +1163,8 @@
         },
         {
           "name": "guardrail off_topic",
-          "span_id": "fbca33277af58e55",
-          "parent_id": "7f4fb620cc5dcfdc",
+          "span_id": "4ce83adb532dc424",
+          "parent_id": "39b05f0347ffc666",
           "start_ms": 0.0,
           "duration_ms": 0.0,
           "status": "UNSET",
@@ -1176,10 +1176,10 @@
         },
         {
           "name": "chat openai/gpt-oss-20b",
-          "span_id": "66a0465d71c0d2bf",
-          "parent_id": "7f4fb620cc5dcfdc",
+          "span_id": "0d074fde08862d6f",
+          "parent_id": "39b05f0347ffc666",
           "start_ms": 0.0,
-          "duration_ms": 0.0,
+          "duration_ms": 3105.613,
           "status": "UNSET",
           "attributes": {
             "gen_ai.operation.name": "chat",
@@ -1191,15 +1191,15 @@
             "gen_ai.response.model": "openai/gpt-oss-20b",
             "gen_ai.usage.input_tokens": 317,
             "gen_ai.usage.output_tokens": 35,
-            "handoff.cache_hit": true
+            "handoff.cache_hit": false
           }
         },
         {
           "name": "chat openai/gpt-oss-20b",
-          "span_id": "0843d3754e81657f",
-          "parent_id": "7f4fb620cc5dcfdc",
-          "start_ms": 0.0,
-          "duration_ms": 0.0,
+          "span_id": "8fba129184149229",
+          "parent_id": "39b05f0347ffc666",
+          "start_ms": 1.129,
+          "duration_ms": 10013.359,
           "status": "UNSET",
           "attributes": {
             "gen_ai.operation.name": "chat",
@@ -1211,15 +1211,15 @@
             "gen_ai.response.model": "openai/gpt-oss-20b",
             "gen_ai.usage.input_tokens": 317,
             "gen_ai.usage.output_tokens": 37,
-            "handoff.cache_hit": true
+            "handoff.cache_hit": false
           }
         },
         {
           "name": "chat openai/gpt-oss-20b",
-          "span_id": "ba18940528867bd9",
-          "parent_id": "7f4fb620cc5dcfdc",
-          "start_ms": 0.0,
-          "duration_ms": 0.0,
+          "span_id": "d2a422bb5cb43a55",
+          "parent_id": "39b05f0347ffc666",
+          "start_ms": 2.126,
+          "duration_ms": 5138.318,
           "status": "UNSET",
           "attributes": {
             "gen_ai.operation.name": "chat",
@@ -1231,14 +1231,14 @@
             "gen_ai.response.model": "openai/gpt-oss-20b",
             "gen_ai.usage.input_tokens": 317,
             "gen_ai.usage.output_tokens": 34,
-            "handoff.cache_hit": true
+            "handoff.cache_hit": false
           }
         },
         {
           "name": "guardrail output_schema",
-          "span_id": "c44486bf382fad18",
-          "parent_id": "7f4fb620cc5dcfdc",
-          "start_ms": 0.0,
+          "span_id": "e84e58816bc0166e",
+          "parent_id": "39b05f0347ffc666",
+          "start_ms": 10014.489,
           "duration_ms": 0.0,
           "status": "UNSET",
           "attributes": {
@@ -1249,9 +1249,9 @@
         },
         {
           "name": "guardrail allowed_label",
-          "span_id": "d101e5329901465b",
-          "parent_id": "7f4fb620cc5dcfdc",
-          "start_ms": 0.0,
+          "span_id": "29ef360e5cd47eb7",
+          "parent_id": "39b05f0347ffc666",
+          "start_ms": 10014.489,
           "duration_ms": 0.0,
           "status": "UNSET",
           "attributes": {
@@ -1262,9 +1262,9 @@
         },
         {
           "name": "estimate combined",
-          "span_id": "37ec5a657a12144c",
-          "parent_id": "7f4fb620cc5dcfdc",
-          "start_ms": 0.0,
+          "span_id": "657377306ac8678f",
+          "parent_id": "39b05f0347ffc666",
+          "start_ms": 10014.489,
           "duration_ms": 0.0,
           "status": "UNSET",
           "attributes": {
@@ -1276,9 +1276,9 @@
         },
         {
           "name": "decision",
-          "span_id": "5a14b603fb61fd22",
-          "parent_id": "7f4fb620cc5dcfdc",
-          "start_ms": 0.0,
+          "span_id": "c20541c31aafa4e8",
+          "parent_id": "39b05f0347ffc666",
+          "start_ms": 10014.489,
           "duration_ms": 0.0,
           "status": "UNSET",
           "attributes": {
@@ -1330,7 +1330,7 @@
       "spans": [
         {
           "name": "invoke_agent handoff-gauge",
-          "span_id": "ed5255968589e652",
+          "span_id": "40b1dca0b28d26ea",
           "parent_id": null,
           "start_ms": 0.0,
           "duration_ms": 0.0,
@@ -1345,8 +1345,8 @@
         },
         {
           "name": "guardrail pii_redaction",
-          "span_id": "ccff9240d768e70b",
-          "parent_id": "ed5255968589e652",
+          "span_id": "facbb5ea57e6d423",
+          "parent_id": "40b1dca0b28d26ea",
           "start_ms": 0.0,
           "duration_ms": 0.0,
           "status": "UNSET",
@@ -1358,8 +1358,8 @@
         },
         {
           "name": "guardrail empty_message",
-          "span_id": "44e117d1275b5fde",
-          "parent_id": "ed5255968589e652",
+          "span_id": "da5f104e7296a97e",
+          "parent_id": "40b1dca0b28d26ea",
           "start_ms": 0.0,
           "duration_ms": 0.0,
           "status": "UNSET",
@@ -1371,8 +1371,8 @@
         },
         {
           "name": "guardrail prompt_injection",
-          "span_id": "8d79abbfef313086",
-          "parent_id": "ed5255968589e652",
+          "span_id": "389ed59225452ae8",
+          "parent_id": "40b1dca0b28d26ea",
           "start_ms": 0.0,
           "duration_ms": 0.0,
           "status": "UNSET",
@@ -1385,8 +1385,8 @@
         },
         {
           "name": "decision",
-          "span_id": "1910b85e7a18c5dd",
-          "parent_id": "ed5255968589e652",
+          "span_id": "d1577c2fccaf826a",
+          "parent_id": "40b1dca0b28d26ea",
           "start_ms": 0.0,
           "duration_ms": 0.0,
           "status": "UNSET",

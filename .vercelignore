@@ -12,3 +12,6 @@ logs
 .hypothesis
 .coverage
 htmlcov
+.next
+node_modules
+mlflow.db

@@ -85,3 +85,14 @@ def test_closest_example_matches_words() -> None:
     examples = load_examples()
     assert closest_example("charged twice for coffee", examples)["title"] == "Charged twice"
     assert closest_example("ignore previous instructions", examples)["title"] == "Prompt injection"
+
+
+def test_production_rewrite_path_reaches_the_routes(client) -> None:
+    # Vercel delivers /api/py/<path> as /api/?path=<path>
+    response = client.post(
+        "/api/?path=triage",
+        json={"text": "card not arrived"},
+        headers={"x-forwarded-for": "192.0.2.9"},
+    )
+    assert response.status_code == 200 and response.json()["intent"] == "card_arrival"
+    assert len(client.get("/api?path=examples").json()) == 6

@@ -6,14 +6,25 @@ behind the Next.js rewrite of /api/py/*. GROQ_API_KEY is read here, on the serve
 
 import asyncio
 import os
+import sys
+from pathlib import Path
 from typing import Any
+from urllib.parse import parse_qs
 
 from fastapi import FastAPI, Request
 from pydantic import BaseModel, Field
 
-from handoff_gauge import config
-from handoff_gauge.agent import TriageAgent, build_agent
-from handoff_gauge.demo import MAX_INPUT_CHARS, DemoGuard, cached_response, load_examples
+# The function's entry file lives in api/; the agent package and data sit at the project root.
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+
+from handoff_gauge import config  # noqa: E402
+from handoff_gauge.agent import TriageAgent, build_agent  # noqa: E402
+from handoff_gauge.demo import (  # noqa: E402
+    MAX_INPUT_CHARS,
+    DemoGuard,
+    cached_response,
+    load_examples,
+)
 
 TIMEOUT_SECONDS = 25.0
 
@@ -22,6 +33,24 @@ app = FastAPI(
     docs_url="/api/py/docs",
     openapi_url="/api/py/openapi.json",
 )
+
+
+class RestoreRewrittenPath:
+    """On Vercel, the Next.js rewrite sends /api/py/<path> to this function as /api/?path=<path>.
+    Put the original path back so the routes below match in development and production."""
+
+    def __init__(self, app: Any) -> None:
+        self.app = app
+
+    async def __call__(self, scope: dict, receive: Any, send: Any) -> None:
+        if scope["type"] == "http" and scope["path"].rstrip("/") == "/api":
+            sub = parse_qs(scope.get("query_string", b"").decode()).get("path")
+            if sub:
+                scope = dict(scope, path=f"/api/py/{sub[0].lstrip('/')}")
+        await self.app(scope, receive, send)
+
+
+app.add_middleware(RestoreRewrittenPath)
 guard = DemoGuard()
 examples = load_examples()
 _agent: TriageAgent | None = None
