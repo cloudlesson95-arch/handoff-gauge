@@ -46,3 +46,23 @@ select = ["E", "F", "I", "B", "UP", "SIM", "ASYNC"]
 testpaths = ["tests"]
 asyncio_mode = "auto"
 markers = ["slow: replays the full cached calibration run (skipped by the edit hook)"]
+
+[tool.coverage.run]
+source = ["handoff_gauge"]
+branch = true
+
+[tool.coverage.report]
+fail_under = 90
+show_missing = true
+skip_covered = true
+
+[tool.mutmut]
+source_paths = ["handoff_gauge/"]
+only_mutate = ["handoff_gauge/guardrails.py", "handoff_gauge/calibration.py"]
+pytest_add_cli_args_test_selection = [
+    "tests/test_guardrails.py",
+    "tests/test_calibration.py",
+    "tests/test_properties.py",
+    "tests/test_decider.py",
+    "tests/test_agent.py",
+]

@@ -1,0 +1,67 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  python:
+    name: Lint, tests, coverage and calibration gate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+      - run: uv sync --locked
+      - run: uv run ruff check .
+      - name: Tests with branch coverage gate (fail-under in pyproject.toml)
+        run: uv run pytest -q --cov --cov-branch --cov-report=term-missing
+      - name: Calibration regression gate (replays cached LLM responses, no API key)
+        run: uv run pytest -q -m slow -rA
+
+  web:
+    name: Next.js lint and build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run build
+
+  mutation:
+    name: Mutation testing (guardrails and calibration)
+    runs-on: ubuntu-latest
+    needs: python
+    steps:
+      - uses: actions/checkout@v5
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+      - run: uv sync --locked
+      - name: Run mutmut
+        run: uv run mutmut run --max-children 4 || true
+      - name: Report surviving mutants and the mutation score
+        run: |
+          uv run mutmut export-cicd-stats
+          uv run mutmut results || true
+          uv run python - <<'EOF' | tee -a "$GITHUB_STEP_SUMMARY"
+          import json
+          s = json.load(open("mutants/mutmut-cicd-stats.json"))
+          tested = s["total"] - s.get("skipped", 0) - s.get("not_checked", 0) - s.get("no_tests", 0)
+          caught = s["killed"] + s.get("timeout", 0)
+          print(f"Mutation score: {caught}/{tested} = {100 * caught / max(tested, 1):.1f}%")
+          print("Stats: " + ", ".join(f"{k}={v}" for k, v in s.items()))
+          EOF
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mutmut-stats
+          path: mutants/mutmut-cicd-stats.json
