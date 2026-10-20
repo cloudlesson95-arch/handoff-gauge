@@ -65,4 +65,5 @@ pytest_add_cli_args_test_selection = [
     "tests/test_properties.py",
     "tests/test_decider.py",
     "tests/test_agent.py",
+    "tests/test_mutation_kills.py",
 ]

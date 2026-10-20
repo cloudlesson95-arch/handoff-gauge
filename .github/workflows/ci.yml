@@ -61,6 +61,15 @@ jobs:
           print(f"Mutation score: {caught}/{tested} = {100 * caught / max(tested, 1):.1f}%")
           print("Stats: " + ", ".join(f"{k}={v}" for k, v in s.items()))
           EOF
+      - name: Mutation score gate (at least 85%)
+        run: |
+          uv run python - <<'EOF'
+          import json, sys
+          s = json.load(open("mutants/mutmut-cicd-stats.json"))
+          tested = s["total"] - s.get("skipped", 0) - s.get("no_tests", 0)
+          score = 100 * (s["killed"] + s.get("timeout", 0)) / max(tested, 1)
+          sys.exit(0 if score >= 85 else f"mutation score {score:.1f}% is below 85%")
+          EOF
       - name: Show the diff of every surviving mutant
         run: |
           echo "::group::Surviving mutants"
