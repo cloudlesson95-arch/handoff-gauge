@@ -89,9 +89,11 @@ DATE_TIME = re.compile(
     r"|(?<![\d:])\d{1,2}:\d{2}(?![\d:])"
 )
 PLACEHOLDER = re.compile(r"\[(?:EMAIL|CARD|PHONE)\]")
-ZERO_WIDTH = re.compile("[­​-‏⁠﻿]")
-_HELD = 0xE000  # private-use characters stand in for held dates while redacting
-
+ZERO_WIDTH = re.compile("[\u00ad\u200b-\u200f\u2060\ufeff]")
+# Private-use characters stand in for held dates while redacting; any already in the
+# input are removed first so they can't be mistaken for one.
+_HELD = 0xE000
+PRIVATE_USE = re.compile("[\ue000-\uf8ff]")
 
 
 def _number_label(number: str) -> str:
@@ -108,7 +110,7 @@ def redact(text: str) -> tuple[str, dict[str, int]]:
         held.append(match.group())
         return chr(_HELD + len(held) - 1)
 
-    text = DATE_TIME.sub(hold, text.replace(chr(_HELD), ""))
+    text = DATE_TIME.sub(hold, PRIVATE_USE.sub("", text))
     counts: dict[str, int] = {}
 
     def replace(label: str) -> str:
@@ -118,8 +120,7 @@ def redact(text: str) -> tuple[str, dict[str, int]]:
     text = EMAIL.sub(lambda m: replace("EMAIL"), text)
     text = NUMBER.sub(lambda m: replace(_number_label(m.group())), text)
     if held:
-        text = re.sub(f"[{chr(_HELD)}-{chr(_HELD + len(held) - 1)}]",
-                      lambda m: held[ord(m.group()) - _HELD], text)
+        text = PRIVATE_USE.sub(lambda m: held[ord(m.group()) - _HELD], text)
     return text, counts
 
 
