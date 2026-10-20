@@ -10,13 +10,13 @@ replayed regression gate and a separate review pass.
 | Check | Where | Result |
 |---|---|---|
 | Lint | `uv run ruff check .` (hook after each edit, CI) | clean |
-| Unit tests | 135 fast tests with `FakeBackend`, no network | all pass |
-| Branch coverage | `pytest --cov --cov-branch`, `fail_under = 90` | 93% |
+| Unit tests | 159 fast tests with `FakeBackend`, no network | all pass |
+| Branch coverage | `pytest --cov --cov-branch`, `fail_under = 90` | 93.6% |
 | Hypothesis properties | `tests/test_properties.py` | all pass (see below) |
 | Calibration regression gate | `tests/test_regression.py`: replays 180 cached LLM responses through the live Decider | ECE and precision hold |
-| Mutation testing | mutmut over `guardrails.py` and `calibration.py`, Linux CI job | **pending: the repository has not been pushed yet** |
+| Mutation testing | mutmut over `guardrails.py` and `calibration.py`, Linux CI job, gate at 85% | 83.2% on the first run, **96.1%** after the tests below; the 23 survivors left are equivalent |
 | Review | the `reviewer` subagent (`.claude/agents/reviewer.md`) over the whole codebase | 1 must-fix, 9 should-fix: all fixed below |
-| Rendering | headless browser at 1280 px and 390 px with device emulation | no horizontal overflow; full triage → review flow works |
+| Rendering | headless browser at 1280 px and 390 px with device emulation, locally and on the production URL | no horizontal overflow; full triage → review flow works |
 
 Properties:
 
@@ -34,10 +34,45 @@ Properties:
 
 ## Surviving mutants
 
-Mutation score: **not yet measured.** mutmut 3 needs `fork`, so it can't run on Windows,
-and the local Docker engine wasn't running. The `mutation` job in `.github/workflows/ci.yml`
-runs it on the first push, writes the score to the job summary and uploads
-`mutmut-cicd-stats.json`. Each surviving mutant gets a test that kills it, recorded here.
+mutmut 3 needs `fork`, so it runs only in the Linux CI job. That job prints the diff of every
+surviving mutant and fails if the score drops below 85%.
+
+| Run | Killed | Survived | Score |
+|---|---|---|---|
+| First CI run | 499 | 101 | 83.2% |
+| After `tests/test_mutation_kills.py` | 569 | 23 | **96.1%** |
+
+Most of the first run's 101 survivors showed behaviour no test pinned down. The new tests in
+[`tests/test_mutation_kills.py`](../tests/test_mutation_kills.py) cover:
+
+- **AllowedLabel**: a mutant that dropped *every* answer, not just the one with an unknown
+  label, survived. That would have turned a valid majority into a handoff. Tests now check that
+  valid answers are kept and that the count in the note is right.
+- **Redaction**: the 13-digit card boundary, `+` and `(` prefixes as phones, per-kind counts
+  and stray private-use characters. The last one exposed defect 16 below.
+- **Guardrail spans**: mutants that renamed or emptied the `guardrail.*` span attributes
+  survived, because no test read them. A test now checks the exact attributes of a passing
+  and a tripped guardrail.
+- **Boundaries and defaults**:
+  - two letters are enough for a message not to be empty;
+  - the sigmoid is checked on negative inputs;
+  - the identity map clamps at 1;
+  - the Wilson bound is checked at n = 1;
+  - empty-input metrics return 0;
+  - the reliability bins' `lo`/`hi` and default count are checked, and ECE passes its `n_bins` on;
+  - an unreachable target reports nothing handled.
+- **Messages**: guardrail trip reasons are checked word for word, since a reviewer reads
+  them, and `ValueError`s are checked with `match=`.
+
+The 23 survivors left are equivalent mutants: no input can tell them apart from the original.
+
+| Survivors | Why they are equivalent |
+|---|---|
+| 15 × `zip(..., strict=...)` changed or removed | Lengths are validated by `_check` before every strict zip; `zip(xs, xs[1:])` is meant to be one shorter |
+| 4 × error message padded with `XX` | `pytest.raises(match=...)` searches for the text, and the padded message still contains it |
+| 2 × sigmoid branch `z >= 0` → `z > 0` / `z >= 1` | Both branches compute the same function; they differ only in overflow safety, which applies to large negative `z` |
+| `min` key `p.threshold is not None` → `or True` | Operating points always have a threshold, so the `None` branch never runs |
+| `IsotonicMap.apply`: `score <= xs[0]` → `<` | They differ only when x points repeat; scikit-learn's isotonic thresholds are strictly increasing (0 duplicates in 2000 random fits, including heavily tied inputs) |
 
 ## Defects found in agent-written code
 
@@ -58,6 +93,8 @@ runs it on the first push, writes the score to the job summary and uploads
 | 13 | Off-topic keyword stems matched inside other words ("atm" in "atmosphere", "sent" in "sentence") | reviewer | Short words must stand alone. New off-topic cases |
 | 14 | Spans with equal start times (Windows' coarse clock) were sorted children-first, so the root span wasn't first | a failing agent test in phase 2 | Ties are broken by depth in `spans_as_json` |
 | 15 | On narrow screens, the charts' initial 560 px width pushed the page wider than the viewport, and the ResizeObserver then measured the widened container | rendering at 390 px and measuring `scrollWidth` | Charts measure first and draw after, and grid items get `min-w-0` |
+| 16 | Redaction parks dates and times in private-use characters while it works, but only the first such character was stripped from the input. A message containing others could have them swapped for held dates, or crash with an `IndexError` | a surviving mutant in the restore step | All private-use characters are stripped first. `test_private_use_characters_cannot_impersonate_held_dates` |
+| 17 | The production route table rewrites `/api/py/triage` to the Python function as `/api/?path=triage`. Routes declared under `/api/py` would not match that path if the function sees it | reading the route table from a local `vercel build` before the first deploy | A small ASGI wrapper restores `/api/py/<path>`. `test_production_rewrite_path_reaches_the_routes` |
 
 ## Remaining risks of leaning on a coding agent
 
@@ -76,8 +113,10 @@ runs it on the first push, writes the score to the job summary and uploads
   provider changes the model behind the same name, the map is stale. The cache pins the
   fitted run so the gate stays reproducible, but it can't detect drift in live answers.
   Re-run `/calibrate` periodically.
-- **Gates that only report.** The mutation job reports a score but does not fail CI below a
-  floor yet. A floor will be set after the first measured run.
+- **Equivalent mutants by argument.** The survivors listed above are called equivalent
+  because of an argument, not a test. If the code around them changes (for example,
+  `_check` is removed), they can become real again, and only the next mutation run would
+  show it.
 - **Weakening a check to make it pass.** The target precision was never changed to reach a
   result. The regression gate compares against the committed report, so a later change that
   lowers precision or raises ECE fails CI and can't silently move the baseline.
